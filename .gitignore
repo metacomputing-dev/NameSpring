@@ -25,3 +25,21 @@ replay_pid*
 
 # Kotlin Gradle plugin data, see https://kotlinlang.org/docs/whatsnew20.html#new-directory-for-kotlin-data-in-gradle-projects
 .kotlin/
+
+# Android build files
+/build
+**/build
+
+# Gradle
+.gradle
+/local.properties
+.gradle/
+**/build/
+
+# IDE files
+.idea
+*.iml
+
+# Others
+.DS_Store
+*.log
