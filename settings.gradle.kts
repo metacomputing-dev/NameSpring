@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "NameSpring"
 include(":app")
-include(":seedEngine")
+include(":seed")

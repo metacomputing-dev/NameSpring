@@ -1,3 +1,6 @@
 [submodule "seedEngine"]
 	path = seedEngine
 	url = https://github.com/metacomputing-dev/NamingEngine.git
+[submodule "seed"]
+	path = seed
+	url = https://github.com/metacomputing-dev/NamingEngine
