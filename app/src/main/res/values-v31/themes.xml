@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.NameSpring" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.NameSpring" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/meta_light_green</item>
+        <item name="colorOnPrimary">@color/meta_dark_blue</item>
+        <item name="colorPrimaryVariant">@color/meta_blended_green</item>
+        <item name="colorSecondary">@color/meta_green</item>
+        <item name="colorOnSecondary">@color/meta_dark_blue</item>
+        <item name="colorSecondaryVariant">@color/meta_blended_green</item>
     </style>
 </resources>
