@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:background="@color/meta_light_green"
+    android:orientation="vertical">
+    <TextView
+        style="@style/nav_header_text_smallest"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="현재 프로필"
+        android:alpha="0.7"/>
+
+    <TextView
+        android:id="@+id/navigation_header_curr_profile_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        app:drawableStartCompat="@drawable/people_24"
+        app:drawableTint="@color/meta_blended_green"
+        android:text="차은우의 프로필"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:singleLine="true"/>
+
+    <TextView
+        style="@style/nav_header_text_smallest"
+        android:id="@+id/navigation_header_tv_edit"
+        app:drawableTint="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:drawableStartCompat="@drawable/symbol_edit_12"
+        android:text="수정" />
+
+    <TextView
+        style="@style/nav_header_text_small"
+        android:id="@+id/navigation_header_tv_fullname"
+        app:layout_constraintBottom_toTopOf="@id/navigation_header_tv_birth"
+        app:layout_constraintRight_toRightOf="parent"
+        app:drawableTint="@color/meta_dark_blue"
+        app:drawableStartCompat="@drawable/symbol_male_12"
+        android:text="차은우" />
+
+    <TextView
+        style="@style/nav_header_text_small"
+        android:id="@+id/navigation_header_tv_birth"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:drawableStartCompat="@drawable/symbol_cake_12"
+        android:text="0000년 00월 00일, 00시 00분"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
