@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/profile_management" android:title="@+id/menu_title_management"/>
-    <item android:id="@+id/qna" android:title="@+id/menu_title_qna"/>
-    <item android:id="@+id/settings" android:title="@+id/menu_title_settings"/>
-    <item android:id="@+id/app_info" android:title="@+id/menu_title_app_info"/>
+    <item android:id="@+id/menu_item_profile_management"
+        android:title="@string/menu_item_title_profiles"
+        android:icon="@drawable/symbol_profile_24" />
+
+    <item android:id="@+id/menu_item_qna"
+        android:title="@string/menu_item_title_qna"
+        android:icon="@drawable/symbol_question_answer_24"/>
+
+    <item android:id="@+id/menu_item_settings"
+        android:title="@string/menu_item_title_settings"
+        android:icon="@drawable/symbol_settings_24" />
+
+    <item android:id="@+id/menu_item_app_info"
+        android:title="@string/menu_item_title_app_info"
+        android:icon="@drawable/symbol_info_24" />
 </menu>

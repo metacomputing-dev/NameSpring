@@ -25,6 +25,11 @@
 
     <string name="profile_form_btn_desc_country">country</string>
 
+    <!-- menu item -->
+    <string name="menu_item_title_profiles">프로필 관리</string>
+    <string name="menu_item_title_qna">Q&amp;A</string>
+    <string name="menu_item_title_settings">설정</string>
+    <string name="menu_item_title_app_info">앱 정보</string>
     <!-- Common others -->
     <string name="open">열기</string>
     <string name="close">닫기</string>
@@ -37,4 +42,5 @@
     <string name="_1">1</string>
     <string name="_00">00</string>
     <string name="seed">Seed</string>
+
 </resources>
