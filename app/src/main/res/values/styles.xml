@@ -54,5 +54,4 @@
     <style name="profile_form_label_sub_small" parent="profile_form_label_sub">
         <item name="android:textSize">12sp</item>
     </style>
-
 </resources>
