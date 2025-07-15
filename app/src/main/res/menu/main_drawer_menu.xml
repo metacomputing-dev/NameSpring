@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_item_home"
+        android:title="@string/menu_item_title_home"
+        android:icon="@drawable/symbol_home_24" />
+
     <item android:id="@+id/menu_item_profile_management"
         android:title="@string/menu_item_title_profiles"
         android:icon="@drawable/symbol_profile_24" />

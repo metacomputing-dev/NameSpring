@@ -2,8 +2,8 @@
     <string name="app_name">이름봄</string>
 
     <string name="profile_new">새 프로필 생성</string>
-    <!-- profile form -->
 
+    <!-- profile form -->
     <string name="profile_label_title">프로필 명</string>
 
     <string name="profile_label_name">이름 정보</string>
@@ -26,11 +26,14 @@
     <string name="profile_form_btn_desc_country">country</string>
 
     <!-- menu item -->
+    <string name="menu_item_title_home">홈 화면</string>
     <string name="menu_item_title_profiles">프로필 관리</string>
     <string name="menu_item_title_qna">Q&amp;A</string>
     <string name="menu_item_title_settings">설정</string>
     <string name="menu_item_title_app_info">앱 정보</string>
 
+    <!-- menu items -->
+    <string name="profile_management">프로필 관리</string>
     <!-- services -->
     <string name="service_profile_report">프로필 보고서</string>
     <string name="service_naming">작명하기</string>

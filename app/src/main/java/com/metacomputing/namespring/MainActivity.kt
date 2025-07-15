@@ -6,6 +6,9 @@ import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.annotation.IdRes
+import androidx.annotation.IntegerRes
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -14,8 +17,10 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import com.metacomputing.namespring.ui.HomeFragment
+import com.metacomputing.namespring.ui.ProfileListFragment
 
 class MainActivity: AppCompatActivity() {
     companion object {
@@ -33,9 +38,7 @@ class MainActivity: AppCompatActivity() {
     }
 
     override fun onResume() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_container, HomeFragment())
-            .commit()
+        openFragment(HomeFragment())
         super.onResume()
     }
 
@@ -59,6 +62,12 @@ class MainActivity: AppCompatActivity() {
         initNavigationView()
     }
 
+    private fun openFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_container, fragment)
+            .commit()
+    }
+
     private fun initNavigationView() {
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar,
@@ -67,7 +76,11 @@ class MainActivity: AppCompatActivity() {
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-        navigationView.setNavigationItemSelectedListener {
+        navigationView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_item_home -> openFragment(HomeFragment())
+                R.id.menu_item_profile_management -> openFragment(ProfileListFragment())
+            }
             drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
@@ -80,6 +93,7 @@ class MainActivity: AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Log.i(TAG, "Menu item selected ${item.itemId}")
+
         return super.onOptionsItemSelected(item)
     }
 }
