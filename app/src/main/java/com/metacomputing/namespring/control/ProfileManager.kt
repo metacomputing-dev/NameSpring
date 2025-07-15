@@ -2,9 +2,11 @@ package com.metacomputing.namespring.control
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.view.LayoutInflater
 import com.metacomputing.namespring.R
 import com.metacomputing.namespring.model.viewmodel.Profile
+import java.util.Calendar
 
 object ProfileManager {
     val profiles: ArrayList<Profile> = ArrayList()
@@ -51,5 +53,16 @@ object ProfileManager {
             .create()
         dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
         dialog.show()
+    }
+
+    // TODO temporal function for debugging in dev phase
+    fun initByMock(context: Context) {
+        for(i in 0 ..< 15) {
+            add(Profile.new(context, "profile title $i",
+                birthDate = Calendar.getInstance(),
+                gender = "남",
+                firstName = "우현",
+                lastName = "김"))
+        }
     }
 }

@@ -25,12 +25,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/service_cardview_naming"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:layout_margin="20dp"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@color/meta_blended_green"
+                style="@style/cardview_button"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="4dp">
                 <LinearLayout
@@ -45,22 +40,19 @@
                         android:layout_height="70dp"
                         android:contentDescription="icon"
                         android:scaleType="fitCenter"
+                        android:clickable="false"
                         android:background="@drawable/icon_naming"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
                         android:text="@string/service_naming" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/service_cardview_compare"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:layout_margin="20dp"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@color/meta_blended_green"
+                style="@style/cardview_button"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="4dp">
                 <LinearLayout
@@ -75,10 +67,12 @@
                         android:layout_height="70dp"
                         android:contentDescription="icon"
                         android:scaleType="fitCenter"
+                        android:clickable="false"
                         android:background="@drawable/icon_compare"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
                         android:text="@string/service_naming_compare" />
 
                 </LinearLayout>
@@ -86,12 +80,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/service_cardview_report"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:layout_margin="20dp"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@color/meta_blended_green"
+                style="@style/cardview_button"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="4dp">
                 <LinearLayout
@@ -106,10 +95,12 @@
                         android:layout_height="70dp"
                         android:contentDescription="icon"
                         android:scaleType="fitCenter"
+                        android:clickable="false"
                         android:background="@drawable/icon_report"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
                         android:text="@string/service_profile_report" />
 
                 </LinearLayout>
