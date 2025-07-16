@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,9 +23,11 @@ class ProfileListFragment: Fragment() {
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var itemTouchHelper: ItemTouchHelper
+
     interface OnStartDragListener {
         fun onStartDrag(viewHolder: RecyclerView.ViewHolder)
     }
+
     val dragListener = object: OnStartDragListener {
         override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
             itemTouchHelper.startDrag(viewHolder)
@@ -37,6 +40,7 @@ class ProfileListFragment: Fragment() {
     ) : RecyclerView.Adapter<ProfileListAdapter.ViewHolder>() {
 
         inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val cardView: CardView = view.findViewById(R.id.profile_list_item_cardview)
             val titleView: TextView = view.findViewById(R.id.profile_list_item_title)
             val nameView: TextView = view.findViewById(R.id.profile_list_item_name)
             val birthView: TextView = view.findViewById(R.id.profile_list_item_birthdate)
@@ -52,6 +56,12 @@ class ProfileListFragment: Fragment() {
 
         @SuppressLint("ClickableViewAccessibility")
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            holder.cardView.setTag(R.id.tag_key_profile_item, items[position])
+            holder.cardView.setOnClickListener {
+                holder.cardView.getTag(R.id.tag_key_profile_item)?.let {
+                    openEditProfileFragment(it as Profile)
+                }
+            }
             holder.titleView.text = items[position].title.value
             holder.nameView.text = items[position].fullName
             holder.birthView.text = items[position].birthAsString
@@ -61,6 +71,13 @@ class ProfileListFragment: Fragment() {
                 }
                 false
             }
+        }
+
+        private fun openEditProfileFragment(profile: Profile) {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.main_container, ProfileEditFragment(profile))
+                .addToBackStack(null)
+                .commit()
         }
 
         fun moveItem(from: Int, to: Int) {
@@ -104,11 +121,10 @@ class ProfileListFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         initByMock(inflater.context) // TODO test code
-        layout = inflater.inflate(R.layout.fragment_profile_management, container, false)
+        layout = inflater.inflate(R.layout.fragment_profile_list, container, false)
         layout.post {
             recyclerView = layout.findViewById(R.id.profile_list_recycler_view)
-            val profiles = ProfileManager.profiles
-            val adapter = ProfileListAdapter(profiles, dragListener)
+            val adapter = ProfileListAdapter(ProfileManager.profiles, dragListener)
 
             recyclerView.layoutManager = LinearLayoutManager(inflater.context)
             recyclerView.adapter = adapter
