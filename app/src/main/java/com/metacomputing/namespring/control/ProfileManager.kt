@@ -10,7 +10,7 @@ import java.util.Calendar
 
 object ProfileManager {
     val profiles: ArrayList<Profile> = ArrayList()
-    var currentId: Long? = null
+    var currentId: String? = null
     val currentProfile: Profile?
         get() {
             return try {
@@ -32,7 +32,7 @@ object ProfileManager {
         return profiles.filter { profile -> profile.title.value == title }
     }
 
-    fun getById(id: Long): Profile {
+    fun getById(id: String): Profile {
         return profiles.first { profile -> profile.id == currentId }
     }
 

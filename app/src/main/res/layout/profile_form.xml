@@ -1,130 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:textAlignment="center"
-    android:gravity="center">
+    android:gravity="end">
+    <LinearLayout
+        android:id="@+id/profile_form_title"
+        android:layout_width="match_parent"
+        style="@style/profile_form_list_item">
+        <TextView
+            style="@style/profile_form_label"
+            android:text="@string/profile_label_title"/>
+
+        <androidx.cardview.widget.CardView
+            style="@style/cardview_separator"
+            app:cardElevation="5dp"/>
+
+        <LinearLayout
+            style="@style/profile_form_container"
+            android:gravity="center">
+            <ImageButton
+                android:id="@+id/profile_form_btn_country"
+                android:contentDescription="@string/profile_form_btn_desc_country"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <EditText
+                style="@style/profile_form_input"
+                android:id="@+id/profile_form_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:hint="@string/profile_form_title_example"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
+        android:id="@+id/profile_form_name"
+        android:layout_width="match_parent"
+        style="@style/profile_form_list_item">
+        <TextView
+            style="@style/profile_form_label"
+            android:text="@string/profile_label_name"/>
+        <androidx.cardview.widget.CardView
+            style="@style/cardview_separator"
+            app:cardElevation="5dp"/>
         <LinearLayout
-            android:id="@+id/profile_form_title"
-            style="@style/profile_form_list_item">
-            <TextView
-                style="@style/profile_form_label"
-                android:text="@string/profile_label_title"/>
+            android:id="@+id/profile_edit_name_container"
+            style="@style/profile_form_container">
+            <include layout="@layout/item_name_family"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/profile_form_birth"
+        android:layout_width="match_parent"
+        style="@style/profile_form_list_item">
+        <TextView
+            style="@style/profile_form_label"
+            android:text="@string/profile_label_birth"/>
+        <androidx.cardview.widget.CardView
+            style="@style/cardview_separator"
+            app:cardElevation="5dp"/>
+        <LinearLayout
+            style="@style/profile_form_container">
             <LinearLayout
-                style="@style/profile_form_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:gravity="center">
-                <ImageButton
-                    android:id="@+id/profile_form_btn_country"
-                    android:contentDescription="@string/profile_form_btn_desc_country"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
                 <EditText
-                    style="@style/profile_form_input"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:autofillHints=""
-                    android:hint="@string/profile_form_title_example"
-                    android:inputType="textPersonName" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/profile_form_name"
-            style="@style/profile_form_list_item">
-            <TextView
-                style="@style/profile_form_label"
-                android:text="@string/profile_label_name"/>
-            <LinearLayout
-                style="@style/profile_form_container">
-                <include layout="@layout/item_name_family"/>
-                <include layout="@layout/item_name_first"/>
-                <TextView
-                    style="@style/profile_form_label_sub_small"
-                    android:text="@string/profile_btn_hanja"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/profile_form_birth"
-            style="@style/profile_form_list_item">
-            <TextView
-                style="@style/profile_form_label"
-                android:text="@string/profile_label_birth"/>
-            <LinearLayout
-                style="@style/profile_form_container">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-                    <EditText
-                        style="@style/profile_form_input_number"
-                        android:id="@+id/profile_form_year"
-                        android:autofillHints=""
-                        android:hint="@string/_0000"
-                        android:maxLength="4"/>
-                    <TextView
-                        style="@style/profile_form_label_sub"
-                        android:text="@string/profile_birth_year" />
-                    <EditText
-                        style="@style/profile_form_input_number"
-                        android:id="@+id/profile_form_month"
-                        android:autofillHints=""
-                        android:hint="@string/_1"
-                        android:maxLength="2"/>
-                    <TextView
-                        style="@style/profile_form_label_sub"
-                        android:text="@string/profile_birth_month" />
-                    <EditText
-                        style="@style/profile_form_input_number"
-                        android:id="@+id/profile_form_day"
-                        android:autofillHints=""
-                        android:hint="@string/_1"
-                        android:maxLength="2"/>
-                    <TextView
-                        style="@style/profile_form_label_sub"
-                        android:text="@string/profile_birth_day" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/profile_form_birth_time"
-            style="@style/profile_form_list_item">
-
-            <TextView
-                style="@style/profile_form_label"
-                android:text="@string/profile_label_birth_time" />
-
-            <LinearLayout
-                style="@style/profile_form_container">
-                <EditText
-                    android:id="@+id/profile_form_hour"
                     style="@style/profile_form_input_number"
+                    android:id="@+id/profile_form_year"
                     android:autofillHints=""
-                    android:hint="@string/_00"
-                    android:maxLength="2" />
+                    android:hint="@string/_0000"
+                    android:maxLength="4"/>
                 <TextView
                     style="@style/profile_form_label_sub"
-                    android:text="@string/profile_birth_hour" />
+                    android:text="@string/profile_birth_year" />
                 <EditText
-                    android:id="@+id/profile_form_minute"
                     style="@style/profile_form_input_number"
+                    android:id="@+id/profile_form_month"
                     android:autofillHints=""
-                    android:hint="@string/_00"
-                    android:maxLength="2" />
+                    android:hint="@string/_1"
+                    android:maxLength="2"/>
                 <TextView
                     style="@style/profile_form_label_sub"
-                    android:text="@string/profile_birth_minute" />
+                    android:text="@string/profile_birth_month" />
+                <EditText
+                    style="@style/profile_form_input_number"
+                    android:id="@+id/profile_form_day"
+                    android:autofillHints=""
+                    android:hint="@string/_1"
+                    android:maxLength="2"/>
+                <TextView
+                    style="@style/profile_form_label_sub"
+                    android:text="@string/profile_birth_day" />
             </LinearLayout>
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/profile_form_birth_time"
+        android:layout_width="match_parent"
+        style="@style/profile_form_list_item">
+
+        <TextView
+            style="@style/profile_form_label"
+            android:text="@string/profile_label_birth_time" />
+
+        <androidx.cardview.widget.CardView
+            style="@style/cardview_separator"
+            app:cardElevation="5dp"/>
+        <LinearLayout
+            style="@style/profile_form_container">
+            <EditText
+                android:id="@+id/profile_form_hour"
+                style="@style/profile_form_input_number"
+                android:autofillHints=""
+                android:hint="@string/_00"
+                android:maxLength="2" />
+            <TextView
+                style="@style/profile_form_label_sub"
+                android:text="@string/profile_birth_hour" />
+            <EditText
+                android:id="@+id/profile_form_minutes"
+                style="@style/profile_form_input_number"
+                android:autofillHints=""
+                android:hint="@string/_00"
+                android:maxLength="2" />
+            <TextView
+                style="@style/profile_form_label_sub"
+                android:text="@string/profile_birth_minute" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/profile_form_additional"
+        android:layout_width="match_parent"
+        style="@style/profile_form_list_item">
+        <TextView
+            style="@style/profile_form_label"
+            android:text="@string/profile_label_additional"/>
+        <androidx.cardview.widget.CardView
+            style="@style/cardview_separator"
+            app:cardElevation="5dp"/>
+        <LinearLayout
+            style="@style/profile_form_container">
+            <TextView
+                style="@style/profile_form_label_sub_small"
+                android:text="@string/profile_label_gender"/>
+            <RadioGroup
+                android:id="@+id/radio_group_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_gender_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp"
+                    android:text="@string/gender_male" />
+
+                <RadioButton
+                    android:id="@+id/radio_gender_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp"
+                    android:text="@string/gender_female" />
+            </RadioGroup>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/save"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/cancel"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel" />
     </LinearLayout>
 </LinearLayout>

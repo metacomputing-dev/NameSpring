@@ -5,6 +5,7 @@ import androidx.annotation.StringDef
 import androidx.lifecycle.MutableLiveData
 import java.util.Calendar
 import java.util.Locale
+import java.util.UUID
 
 data class Profile(
     val title: MutableLiveData<String>,
@@ -53,10 +54,8 @@ data class Profile(
             return new(title, loc, birthDate, gender, firstName, lastName)
         }
     }
-    private val timestamp: Long = System.currentTimeMillis()
 
-    val id: Long
-        get() = timestamp
+    val id: String = UUID.randomUUID().toString()
     val fullName: String
         get() = lastName.value + firstName.value
 
@@ -66,4 +65,9 @@ data class Profile(
                 "" + get(Calendar.YEAR) + "." + get(Calendar.MONTH) + "." + get(Calendar.DAY_OF_MONTH) + "."
             } ?: ""
         }
+
+    fun getBirthDateOf(fieldOfCalendar: Int): Int? {
+        return birthDate.value?.get(fieldOfCalendar)
+    }
+
 }
