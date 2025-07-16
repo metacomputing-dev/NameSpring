@@ -56,6 +56,24 @@
     </style>
 
     <!-- Buttons -->
+    <style name="cardview_separator">
+        <item name="android:alpha">0.4</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+    </style>
+
+    <style name="cardview_round_button_smallest">
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
     <style name="cardview_button">
         <item name="android:layout_columnWeight">1</item>
         <item name="android:layout_rowWeight">1</item>

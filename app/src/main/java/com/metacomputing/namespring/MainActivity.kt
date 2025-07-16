@@ -6,6 +6,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.annotation.IntegerRes
 import androidx.annotation.LayoutRes
@@ -35,6 +36,15 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initializeUI()
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (supportFragmentManager.backStackEntryCount > 0) {
+                    supportFragmentManager.popBackStack()
+                } else {
+                    openFragment(HomeFragment(), false)
+                }
+            }
+        })
     }
 
     override fun onResume() {
@@ -62,9 +72,10 @@ class MainActivity: AppCompatActivity() {
         initNavigationView()
     }
 
-    private fun openFragment(fragment: Fragment) {
+    private fun openFragment(fragment: Fragment, stack: Boolean = true) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_container, fragment)
+            .apply { if (stack) addToBackStack(null) }
             .commit()
     }
 

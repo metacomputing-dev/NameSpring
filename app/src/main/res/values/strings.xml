@@ -11,16 +11,18 @@
     <string name="label_name_family">성</string>
     <string name="label_name_first">이름</string>
     <string name="label_name_family_example">차</string>
-    <string name="label_name_first_example">은우</string>
+    <string name="label_name_first_example">은</string>
 
+    <string name="profile_label_hanja_selection">漢</string>
     <string name="profile_label_birth">생년월일</string>
     <string name="profile_label_birth_time">태어난 시각</string>
+    <string name="profile_label_additional">추가 정보</string>
+    <string name="profile_label_gender">성별</string>
     <string name="profile_birth_year">년</string>
     <string name="profile_birth_month">월</string>
     <string name="profile_birth_day">일</string>
     <string name="profile_birth_hour">시</string>
     <string name="profile_birth_minute">분</string>
-    <string name="profile_form_btn_confirm">저장</string>
     <string name="profile_form_title_example">내 프로필</string>
 
     <string name="profile_form_btn_desc_country">country</string>
@@ -34,6 +36,7 @@
 
     <!-- menu items -->
     <string name="profile_management">프로필 관리</string>
+    <string name="profile_edit">프로필 설정</string>
     <!-- services -->
     <string name="service_profile_report">프로필 보고서</string>
     <string name="service_naming">작명하기</string>
@@ -52,5 +55,7 @@
     <string name="_1">1</string>
     <string name="_00">00</string>
     <string name="seed">Seed</string>
+    <string name="gender_male">남</string>
+    <string name="gender_female">여</string>
 
 </resources>
