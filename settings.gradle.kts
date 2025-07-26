@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "NameSpring"
 include(":app")
 include(":seed")
+include(":seed:MCalendar")

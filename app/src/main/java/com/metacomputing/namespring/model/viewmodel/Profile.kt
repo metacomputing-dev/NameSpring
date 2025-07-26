@@ -13,7 +13,9 @@ data class Profile(
     val birthDate: MutableLiveData<Calendar>,
     @Gender val gender: MutableLiveData<String>,
     val firstName: MutableLiveData<String>,
-    val lastName: MutableLiveData<String>,
+    val firstNameHanja: MutableLiveData<String>,
+    val familyName: MutableLiveData<String>,
+    val familyNameHanja: MutableLiveData<String>,
     ) {
     companion object {
         @StringDef(Gender.MALE, Gender.FEMALE)
@@ -31,7 +33,9 @@ data class Profile(
             birthDate: Calendar,
             @Gender gender: String,
             firstName: String,
-            lastName: String
+            firstNameHanja: String,
+            familyName: String,
+            familyNameHanja: String
         ): Profile {
             return Profile(
                 MutableLiveData<String>(title),
@@ -39,7 +43,9 @@ data class Profile(
                 MutableLiveData<Calendar>(birthDate),
                 MutableLiveData<String>(gender),
                 MutableLiveData<String>(firstName),
-                MutableLiveData<String>(lastName)
+                MutableLiveData<String>(firstNameHanja),
+                MutableLiveData<String>(familyName),
+                MutableLiveData<String>(familyNameHanja),
             )
         }
 
@@ -48,16 +54,20 @@ data class Profile(
                 birthDate: Calendar,
                 @Gender gender: String,
                 firstName: String,
-                lastName: String
+                firstNameHanja: String,
+                familyName: String,
+                familyNameHanja: String
         ): Profile {
             val loc = context.resources.configuration.locales.get(0)
-            return new(title, loc, birthDate, gender, firstName, lastName)
+            return new(title, loc, birthDate, gender, firstName, firstNameHanja, familyName, familyNameHanja)
         }
     }
 
     val id: String = UUID.randomUUID().toString()
     val fullName: String
-        get() = lastName.value + firstName.value
+        get() = familyName.value + firstName.value
+    val fullNameHanja: String
+        get() = familyNameHanja.value + firstNameHanja.value
 
     val birthAsString: String
         get() {

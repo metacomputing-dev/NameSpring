@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="end">
+
+    <LinearLayout
+        android:id="@+id/profile_form_name"
+        android:layout_width="match_parent"
+        style="@style/profile_form_list_item">
+        <TextView
+            style="@style/profile_form_label"
+            android:text="@string/profile_label_name"/>
+        <androidx.cardview.widget.CardView
+            style="@style/cardview_separator"
+            app:cardElevation="5dp"/>
+        <LinearLayout
+            android:id="@+id/naming_request_name_container"
+            style="@style/profile_form_container">
+            <include layout="@layout/item_name_family"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

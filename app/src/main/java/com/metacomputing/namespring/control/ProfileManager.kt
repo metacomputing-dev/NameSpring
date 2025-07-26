@@ -22,6 +22,7 @@ object ProfileManager {
 
     fun add(profile: Profile) {
         profiles.add(profile)
+        currentId = profile.id
     }
 
     fun getByName(fullName: String): List<Profile> {
@@ -33,36 +34,25 @@ object ProfileManager {
     }
 
     fun getById(id: String): Profile {
-        return profiles.first { profile -> profile.id == currentId }
+        return profiles.first { profile -> profile.id == id }
     }
 
     fun select(profile: Profile) {
         currentId = profile.id
     }
 
-    fun showDialog(activity: Activity, profile: Profile? = null) {
-        val form = LayoutInflater.from(activity).inflate(R.layout.profile_form, null)
-        val dialog = AlertDialog.Builder(activity)
-            .setTitle(R.string.profile_new)
-            .setView(form)
-            .setPositiveButton(R.string.ok) { dialog, _ ->
-                // TODO run evaluation and save/update profile
-                dialog.dismiss()
-            }
-            .setNegativeButton("취소", null)
-            .create()
-        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
-        dialog.show()
-    }
-
     // TODO temporal function for debugging in dev phase
     fun initByMock(context: Context) {
-        for(i in 0 ..< 15) {
-            add(Profile.new(context, "profile title $i",
-                birthDate = Calendar.getInstance(),
-                gender = "남",
-                firstName = "우현",
-                lastName = "김"))
+        if (profiles.size == 0) {
+            for(i in 0 ..< 15) {
+                add(Profile.new(context, "profile title $i",
+                    birthDate = Calendar.getInstance(),
+                    gender = "남",
+                    firstName = "우현",
+                    firstNameHanja = "禹鉉",
+                    familyName = "김",
+                    familyNameHanja = "金"))
+            }
         }
     }
 }
