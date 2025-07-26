@@ -18,7 +18,7 @@ import com.metacomputing.namespring.control.ProfileManager
 import com.metacomputing.namespring.control.ProfileManager.initByMock
 import com.metacomputing.namespring.model.viewmodel.Profile
 
-class ProfileListFragment: Fragment() {
+class ProfileListFragment: BaseFragment() {
     private lateinit var layout: View
     private lateinit var recyclerView: RecyclerView
 
@@ -132,7 +132,6 @@ class ProfileListFragment: Fragment() {
             itemTouchHelper = ItemTouchHelper(callback)
             itemTouchHelper.attachToRecyclerView(recyclerView)
         }
-
 
         return layout
     }

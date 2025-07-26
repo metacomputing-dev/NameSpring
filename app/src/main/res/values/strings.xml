@@ -57,5 +57,9 @@
     <string name="seed">Seed</string>
     <string name="gender_male">남</string>
     <string name="gender_female">여</string>
+    <string name="naming_form">작명하기</string>
+    <string name="naming_start">작명 시작</string>
+    <string name="naming_result">작명 결과</string>
+    <string name="naming_report">이름 평가 레포트</string>
 
 </resources>

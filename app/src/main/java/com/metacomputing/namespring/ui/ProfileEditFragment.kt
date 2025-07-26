@@ -8,14 +8,13 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.RadioGroup
 import androidx.appcompat.widget.AppCompatButton
-import androidx.fragment.app.Fragment
 import com.metacomputing.namespring.R
 import com.metacomputing.namespring.model.viewmodel.Profile
 import java.util.Calendar
 
 class ProfileEditFragment(
-    val profile: Profile
-): Fragment() {
+    private val profile: Profile
+): BaseFragment() {
     private lateinit var layout: View
 
     private lateinit var title: EditText
@@ -76,7 +75,7 @@ class ProfileEditFragment(
 
     private fun loadFrom(profile: Profile) {
         title.setText(profile.title.value)
-        family.setText(profile.lastName.value)
+        family.setText(profile.familyName.value)
         profile.firstName.value?.forEach { char ->
             View.inflate(requireContext(), R.layout.item_name_first, null).run {
                 post {
@@ -105,7 +104,7 @@ class ProfileEditFragment(
     private fun saveProcess() {
         // TODO save to DataStore in future
         profile.title.value = title.text.toString()
-        profile.lastName.value = family.text.toString()
+        profile.familyName.value = family.text.toString()
         var firstName = ""
         names.forEach { editText ->
             firstName += editText.text.toString()
