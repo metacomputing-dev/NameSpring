@@ -21,6 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import com.metacomputing.namespring.ui.HomeFragment
+import com.metacomputing.namespring.ui.NavigationHeaderUI
 import com.metacomputing.namespring.ui.ProfileListFragment
 
 class MainActivity: AppCompatActivity() {
@@ -95,6 +96,7 @@ class MainActivity: AppCompatActivity() {
             drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
+        NavigationHeaderUI(this, navigationView).initView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
