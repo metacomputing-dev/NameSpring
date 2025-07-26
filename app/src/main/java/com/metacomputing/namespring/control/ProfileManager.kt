@@ -1,17 +1,21 @@
 package com.metacomputing.namespring.control
 
-import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
-import android.view.LayoutInflater
-import com.metacomputing.namespring.R
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.metacomputing.namespring.model.viewmodel.Profile
 import java.util.Calendar
 
 object ProfileManager {
+    private const val TAG = "ProfileManager"
     val profiles: ArrayList<Profile> = ArrayList()
     var currentId: String? = null
-    val currentProfile: Profile?
+        set(value) {
+            field = value
+            currentProfileId.value = value
+        }
+        get() = currentProfileId.value
+    var currentProfile: Profile? = null
         get() {
             return try {
                 currentId?.let { getById(it) }
@@ -19,6 +23,18 @@ object ProfileManager {
                 null
             }
         }
+        private set
+
+    val currentProfileId = MutableLiveData<String>()
+
+    fun setCurrent(profile: Profile) {
+        if (profiles.contains(profile)) {
+            currentId = profile.id
+            currentProfile = profile
+        } else {
+            Log.e(TAG, "No such profile.")
+        }
+    }
 
     fun add(profile: Profile) {
         profiles.add(profile)
@@ -37,8 +53,12 @@ object ProfileManager {
         return profiles.first { profile -> profile.id == id }
     }
 
-    fun select(profile: Profile) {
-        currentId = profile.id
+    fun remove(profile: Profile) {
+        if (profile.id == currentId) {
+            currentId = null
+            currentProfile = null
+        }
+        profiles.remove(profile)
     }
 
     // TODO temporal function for debugging in dev phase

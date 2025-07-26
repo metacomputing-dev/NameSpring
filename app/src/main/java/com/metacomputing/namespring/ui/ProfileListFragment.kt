@@ -1,15 +1,19 @@
 package com.metacomputing.namespring.ui
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.cardview.widget.CardView
-import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +21,7 @@ import com.metacomputing.namespring.R
 import com.metacomputing.namespring.control.ProfileManager
 import com.metacomputing.namespring.control.ProfileManager.initByMock
 import com.metacomputing.namespring.model.viewmodel.Profile
+import androidx.core.graphics.drawable.toDrawable
 
 class ProfileListFragment: BaseFragment() {
     private lateinit var layout: View
@@ -36,11 +41,13 @@ class ProfileListFragment: BaseFragment() {
 
     inner class ProfileListAdapter(
         private val items: MutableList<Profile>,
+        private val onMenuClick: (Int, Profile) -> Unit,
         private val dragStartListener: OnStartDragListener
     ) : RecyclerView.Adapter<ProfileListAdapter.ViewHolder>() {
 
         inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val cardView: CardView = view.findViewById(R.id.profile_list_item_cardview)
+            val backgroundView: LinearLayout = view.findViewById(R.id.profile_list_item_background)
             val titleView: TextView = view.findViewById(R.id.profile_list_item_title)
             val nameView: TextView = view.findViewById(R.id.profile_list_item_name)
             val birthView: TextView = view.findViewById(R.id.profile_list_item_birthdate)
@@ -57,10 +64,21 @@ class ProfileListFragment: BaseFragment() {
         @SuppressLint("ClickableViewAccessibility")
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.cardView.setTag(R.id.tag_key_profile_item, items[position])
+            if (ProfileManager.currentId == items[position].id) {
+                holder.backgroundView.background =
+                    resources.getColor(R.color.meta_blended_green).toDrawable()
+            } else {
+                holder.backgroundView.background =
+                    resources.getColor(R.color.meta_light_green).toDrawable()
+            }
             holder.cardView.setOnClickListener {
-                holder.cardView.getTag(R.id.tag_key_profile_item)?.let {
-                    openEditProfileFragment(it as Profile)
+                val popup = PopupMenu(requireContext(), holder.cardView)
+                popup.menuInflater.inflate(R.menu.profile_item_context_menu, popup.menu)
+                popup.setOnMenuItemClickListener { menuItem ->
+                    onMenuClick(menuItem.itemId, holder.cardView.getTag(R.id.tag_key_profile_item) as Profile)
+                    true
                 }
+                popup.show()
             }
             holder.titleView.text = items[position].title.value
             holder.nameView.text = items[position].fullName
@@ -71,13 +89,6 @@ class ProfileListFragment: BaseFragment() {
                 }
                 false
             }
-        }
-
-        private fun openEditProfileFragment(profile: Profile) {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.main_container, ProfileEditFragment(profile))
-                .addToBackStack(null)
-                .commit()
         }
 
         fun moveItem(from: Int, to: Int) {
@@ -115,6 +126,7 @@ class ProfileListFragment: BaseFragment() {
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -124,7 +136,15 @@ class ProfileListFragment: BaseFragment() {
         layout = inflater.inflate(R.layout.fragment_profile_list, container, false)
         layout.post {
             recyclerView = layout.findViewById(R.id.profile_list_recycler_view)
-            val adapter = ProfileListAdapter(ProfileManager.profiles, dragListener)
+            val adapter = ProfileListAdapter(ProfileManager.profiles,
+                onMenuClick = { menuItemId, profile ->
+                    when (menuItemId) {
+                        R.id.menu_item_profile_set_main -> ProfileManager.setCurrent(profile)
+                        R.id.menu_item_profile_delete -> ProfileManager.remove(profile)
+                        R.id.menu_item_profile_edit -> openEditProfileFragment(profile)
+                    }
+                    recyclerView.adapter?.notifyDataSetChanged()
+                }, dragListener)
 
             recyclerView.layoutManager = LinearLayoutManager(inflater.context)
             recyclerView.adapter = adapter
@@ -134,5 +154,12 @@ class ProfileListFragment: BaseFragment() {
         }
 
         return layout
+    }
+
+    private fun openEditProfileFragment(profile: Profile) {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.main_container, ProfileEditFragment(profile))
+            .addToBackStack(null)
+            .commit()
     }
 }

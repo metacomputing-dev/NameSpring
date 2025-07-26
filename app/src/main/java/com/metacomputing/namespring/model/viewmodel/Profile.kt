@@ -1,5 +1,6 @@
 package com.metacomputing.namespring.model.viewmodel
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.annotation.StringDef
 import androidx.lifecycle.MutableLiveData
@@ -73,6 +74,15 @@ data class Profile(
         get() {
             return birthDate.value?.run {
                 "" + get(Calendar.YEAR) + "." + get(Calendar.MONTH) + "." + get(Calendar.DAY_OF_MONTH) + "."
+            } ?: ""
+        }
+
+    val birthAsPrettyString: String
+        @SuppressLint("DefaultLocale")
+        get() {
+            return birthDate.value?.run {
+                String.format("%d년 %d월 %d일, %d시 %d분",
+                    get(Calendar.YEAR), get(Calendar.MONTH), get(Calendar.DAY_OF_MONTH), get(Calendar.HOUR_OF_DAY), get(Calendar.MINUTE))
             } ?: ""
         }
 
