@@ -7,9 +7,14 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.cardview.widget.CardView
 import com.metacomputing.namespring.R
 import com.metacomputing.namespring.model.viewmodel.Profile
+import com.metacomputing.namespring.model.viewmodel.getHanjaAt
+import com.metacomputing.namespring.model.viewmodel.replacedHanjaString
+import com.metacomputing.namespring.ui.util.HanjaSearchDialogUtil
 import java.util.Calendar
 
 class ProfileEditFragment(
@@ -21,7 +26,10 @@ class ProfileEditFragment(
 
     private lateinit var nameContainer: LinearLayout
     private lateinit var family: EditText
+    private lateinit var familyHanjaCardView: CardView
+    private lateinit var familyHanjaTextView: TextView
     private var names = ArrayList<EditText>()
+    private var namesHanjaSelector = ArrayList<CardView>()
 
     private lateinit var year: EditText
     private lateinit var month: EditText
@@ -47,6 +55,8 @@ class ProfileEditFragment(
 
                 nameContainer = findViewById(R.id.profile_edit_name_container)
                 family = findViewById(R.id.profile_form_family_text)
+                familyHanjaCardView = findViewById(R.id.profile_edit_family_hanja_cardview)
+                familyHanjaTextView = findViewById(R.id.profile_edit_family_hanja_text)
 
                 year = findViewById(R.id.profile_form_year)
                 month = findViewById(R.id.profile_form_month)
@@ -76,13 +86,40 @@ class ProfileEditFragment(
     private fun loadFrom(profile: Profile) {
         title.setText(profile.title.value)
         family.setText(profile.familyName.value)
-        profile.firstName.value?.forEach { char ->
+        // Family name
+        familyHanjaTextView.text = profile.familyNameHanja.value
+        familyHanjaCardView.setOnClickListener {
+            HanjaSearchDialogUtil.show(this@ProfileEditFragment,
+                pronounce = family.text.toString(),
+                currentHanja = familyHanjaTextView.text.toString()) { hanjaInfo ->
+                // TODO observe live data, not doing like this manual update
+                profile.familyNameHanja.value = hanjaInfo.hanja
+                familyHanjaTextView.text = hanjaInfo.hanja
+            }
+        }
+        // Name
+        profile.firstName.value?.forEachIndexed { idx, char ->
             View.inflate(requireContext(), R.layout.item_name_first, null).run {
                 post {
-                    // TODO hanja info
                     val name = findViewById<EditText>(R.id.profile_edit_char_text)
+                    val nameHanjaCardView = findViewById<CardView>(R.id.profile_edit_hanja_cardview)
+                    val nameHanjaText = findViewById<TextView>(R.id.profile_edit_hanja_text)
+
                     name.setText(char.toString())
+                    profile.firstNameHanja.value?.getHanjaAt(idx)?.let {
+                        nameHanjaText.text = it
+                    }
+                    nameHanjaCardView.setOnClickListener {
+                        HanjaSearchDialogUtil.show(this@ProfileEditFragment,
+                            pronounce = name.text.toString(),
+                            currentHanja = nameHanjaText.text.toString()) { hanjaInfo ->
+                            profile.firstNameHanja.value = profile.firstNameHanja.value?.replacedHanjaString(idx, hanjaInfo.hanja)
+                            nameHanjaText.text = hanjaInfo.hanja
+                        }
+                    }
+
                     names.add(name)
+                    namesHanjaSelector.add(nameHanjaCardView)
                 }
                 nameContainer.addView(this)
             }

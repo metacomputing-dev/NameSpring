@@ -2,7 +2,6 @@ package com.metacomputing.namespring.control
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.MainThread
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,19 +27,17 @@ object TaskManager {
         onError: (Throwable) -> Unit = {}
     ): Job {
         // TODO make a Common UI for loading
-        Toast.makeText(context, "Running task: $taskName", Toast.LENGTH_SHORT).show()
         return scope.launch {
             try {
                 Log.i(TAG, "launch task $taskName")
                 val result = block(inputs)
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Done task: $taskName", Toast.LENGTH_SHORT).show()
                     Log.i(TAG, "finished task $taskName")
                     onSuccess(result)
                 }
             } catch (e: Throwable) {
                 withContext(Dispatchers.Main) {
-                    Log.e(TAG, "Exception occurred on TaskManager")
+                    Log.e(TAG, "Exception occurred on TaskManager: ${e.message}")
                     onError(e)
                 }
             }

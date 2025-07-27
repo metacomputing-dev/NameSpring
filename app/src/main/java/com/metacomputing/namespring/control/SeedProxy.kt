@@ -1,9 +1,9 @@
 package com.metacomputing.namespring.control
 
-import android.util.Log
-import com.metacomputing.namespring.model.viewmodel.NamingReport
+import com.metacomputing.namespring.model.report.NamingReport
 import com.metacomputing.namespring.model.viewmodel.Profile
 import com.metacomputing.seed.Seed
+import com.metacomputing.seed.model.HanjaSearchResult
 import java.util.Calendar
 
 
@@ -51,5 +51,9 @@ object SeedProxy {
                     "[${toFormat(name[1])}/${toFormat(hanja[1])}]" +
                     "[${toFormat(name[2])}/${toFormat(hanja[2])}]"
         }
+    }
+
+    fun getHanjaInfoByPronounce(pronounce: String): List<HanjaSearchResult> {
+        return Seed.searchHanjaByKorean(pronounce)
     }
 }

@@ -1,4 +1,4 @@
-package com.metacomputing.namespring.model.viewmodel
+package com.metacomputing.namespring.model.report
 
 data class ReportItem(
     val title: String,

@@ -27,7 +27,11 @@
 
     <string name="profile_form_btn_desc_country">country</string>
 
-    <!-- menu item -->
+    <!-- search hanja -->
+    <string name="search_hanja_title">한자 찾기</string>
+
+
+    <!-- navigation menu item -->
     <string name="menu_item_title_home">홈 화면</string>
     <string name="menu_item_title_profiles">프로필 관리</string>
     <string name="menu_item_title_qna">Q&amp;A</string>
@@ -37,6 +41,7 @@
     <!-- menu items -->
     <string name="profile_management">프로필 관리</string>
     <string name="profile_edit">프로필 설정</string>
+
     <!-- services -->
     <string name="service_profile_report">프로필 보고서</string>
     <string name="service_naming">작명하기</string>
@@ -61,5 +66,12 @@
     <string name="naming_start">작명 시작</string>
     <string name="naming_result">작명 결과</string>
     <string name="naming_report">이름 평가 레포트</string>
+
+    <!-- Hint -->
+    <string name="hint_hanja">金</string>
+    <string name="hint_hanja_info">성씨 김</string>
+    <string name="hint_search_hanja_by_meaning">뜻 검색 (\'美\'를 찾는다면 \'아름다울\' 입력)</string>
+    <string name="hint_hanja_mi">美</string>
+    <string name="hint_hanja_meaning_mi">아름다울 미</string>
 
 </resources>
