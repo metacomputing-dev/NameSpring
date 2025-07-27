@@ -10,7 +10,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.metacomputing.namespring.R
-import com.metacomputing.namespring.model.viewmodel.NamingReport
+import com.metacomputing.namespring.model.report.NamingReport
 
 class NamingListFragment(
     private val reports: ArrayList<NamingReport>
@@ -29,7 +29,7 @@ class NamingListFragment(
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.naming_list_item, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_naming_result, parent, false)
             return ViewHolder(view)
         }
 

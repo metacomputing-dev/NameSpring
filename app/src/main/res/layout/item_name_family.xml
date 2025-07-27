@@ -16,7 +16,7 @@
         style="@style/profile_form_label_sub_small"
         android:text="@string/label_name_family"/>
     <androidx.cardview.widget.CardView
-        android:id="@+id/profile_edit_hanja_cardview"
+        android:id="@+id/profile_edit_family_hanja_cardview"
         style="@style/cardview_round_button_smallest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
             android:background="@color/meta_light_green"
             android:gravity="center">
             <TextView
-                android:id="@+id/profile_edit_hanja_text"
+                android:id="@+id/profile_edit_family_hanja_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"

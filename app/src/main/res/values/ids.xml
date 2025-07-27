@@ -2,4 +2,5 @@
 <resources>
     <item name="tag_key_profile_item" type="id" />
     <item name="tag_key_naming_list_item" type="id" />
+    <item name="tag_key_hanja_search_list_item" type="id" />
 </resources>

@@ -29,14 +29,14 @@ data class Profile(
         }
 
         fun new(
-            title: String,
-            locale: Locale,
-            birthDate: Calendar,
-            @Gender gender: String,
-            firstName: String,
-            firstNameHanja: String,
-            familyName: String,
-            familyNameHanja: String
+            title: String?,
+            locale: Locale?,
+            birthDate: Calendar?,
+            @Gender gender: String?,
+            firstName: String?,
+            firstNameHanja: String?,
+            familyName: String?,
+            familyNameHanja: String?
         ): Profile {
             return Profile(
                 MutableLiveData<String>(title),
@@ -90,4 +90,29 @@ data class Profile(
         return birthDate.value?.get(fieldOfCalendar)
     }
 
+    fun deepCopy(): Profile {
+        return Profile.new(
+            title.value, locale.value, birthDate.value, gender.value,
+            firstName.value, firstNameHanja.value, familyName.value, familyNameHanja.value)
+    }
+
+    override fun toString(): String {
+        return "Profile{ id=${id}, title=${title.value}, locale=${locale.value}, birthDate=${birthAsString}, " +
+                "gender=${gender.value}, firstName=${firstName.value}, firstNameHanja=${firstNameHanja.value}, " +
+                "familyName=${familyName.value}, familyNameHanja=${familyNameHanja.value} }"
+    }
+}
+
+fun String.getHanjaAt(index: Int): String {
+    val listChar = toCharArray().concatToString().toList()
+    return  if (listChar.size > index) toCharArray().concatToString().toList()[index].toString()
+            else return ""
+}
+
+fun String.replacedHanjaString(index: Int, hanja: String): String {
+    val listChar = this.toCharArray().concatToString().toMutableList()
+    if (listChar.size > index) {
+        listChar[index] = hanja.toCharArray().concatToString().toList()[0]
+        return listChar.joinToString { "" }
+    } else throw RuntimeException("Invalid index. required $index index from the String '$this'")
 }
