@@ -5,46 +5,44 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.metacomputing.namespring.R
+import com.metacomputing.namespring.databinding.FragmentNamingListBinding
+import com.metacomputing.namespring.databinding.ListItemNamingResultBinding
 import com.metacomputing.namespring.model.report.NamingReport
 
 class NamingListFragment(
     private val reports: ArrayList<NamingReport>
 ): BaseFragment() {
-    private lateinit var layout: View
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var binding: FragmentNamingListBinding
 
-    inner class NamingListAdapter(
+    private inner class NamingListAdapter(
         private val items: MutableList<NamingReport>,
     ) : RecyclerView.Adapter<NamingListAdapter.ViewHolder>() {
 
-        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val cardView: CardView = view.findViewById(R.id.naming_list_item_cardview)
-            val nameView: TextView = view.findViewById(R.id.naming_list_item_name)
-            val scoreView: TextView = view.findViewById(R.id.naming_list_item_score)
-        }
+        inner class ViewHolder(val binding: ListItemNamingResultBinding) : RecyclerView.ViewHolder(binding.root)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_naming_result, parent, false)
-            return ViewHolder(view)
+            return ViewHolder(ListItemNamingResultBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
 
         override fun getItemCount() = items.size
 
         @SuppressLint("ClickableViewAccessibility")
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.cardView.setTag(R.id.tag_key_naming_list_item, items[position])
-            holder.cardView.setOnClickListener {
-                holder.cardView.getTag(R.id.tag_key_naming_list_item)?.let {
-                    openNamingReportFragment(it as NamingReport)
+            holder.binding.apply {
+                namingListItemCardview.apply {
+                    setTag(R.id.tag_key_naming_list_item, items[position])
+                    setOnClickListener {
+                        getTag(R.id.tag_key_naming_list_item)?.let {
+                            openNamingReportFragment(it as NamingReport)
+                        }
+                    }
                 }
+                namingListItemName.text = items[position].name
+                namingListItemScore.text = items[position].totalScore.toString()
             }
-            holder.nameView.text = items[position].name
-            holder.scoreView.text = items[position].totalScore.toString()
         }
 
         private fun openNamingReportFragment(report: NamingReport) {
@@ -60,13 +58,13 @@ class NamingListFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        layout = inflater.inflate(R.layout.fragment_naming_list, container, false)
-        layout.post {
-            recyclerView = layout.findViewById(R.id.naming_list_recycler_view)
-            recyclerView.layoutManager = LinearLayoutManager(inflater.context)
-            recyclerView.adapter = NamingListAdapter(reports)
+        FragmentNamingListBinding.inflate(LayoutInflater.from(requireContext())).apply {
+            binding = this
+            namingListRecyclerView.apply {
+                layoutManager = LinearLayoutManager(inflater.context)
+                adapter = NamingListAdapter(reports)
+            }
+            return root
         }
-
-        return layout
     }
 }

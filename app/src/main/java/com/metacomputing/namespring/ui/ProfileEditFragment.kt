@@ -6,154 +6,120 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.RadioGroup
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatButton
-import androidx.cardview.widget.CardView
 import com.metacomputing.namespring.R
+import com.metacomputing.namespring.databinding.FragmentProfileEditBinding
 import com.metacomputing.namespring.model.viewmodel.Profile
-import com.metacomputing.namespring.model.viewmodel.getHanjaAt
-import com.metacomputing.namespring.model.viewmodel.replacedHanjaString
-import com.metacomputing.namespring.ui.util.HanjaSearchDialogUtil
+import com.metacomputing.namespring.ui.utils.HanjaSearchDialog
+import com.metacomputing.namespring.ui.utils.NameSlot
+import com.metacomputing.namespring.utils.getHanjaAt
 import java.util.Calendar
 
 class ProfileEditFragment(
     private val profile: Profile
 ): BaseFragment() {
-    private lateinit var layout: View
+    private lateinit var binding: FragmentProfileEditBinding
 
-    private lateinit var title: EditText
-
-    private lateinit var nameContainer: LinearLayout
-    private lateinit var family: EditText
-    private lateinit var familyHanjaCardView: CardView
-    private lateinit var familyHanjaTextView: TextView
     private var names = ArrayList<EditText>()
-    private var namesHanjaSelector = ArrayList<CardView>()
+    private var namesHanja = ArrayList<TextView>()
 
-    private lateinit var year: EditText
-    private lateinit var month: EditText
-    private lateinit var day: EditText
-
-    private lateinit var hour: EditText
-    private lateinit var minutes: EditText
-
-    private lateinit var genderGroup: RadioGroup
-
-    private lateinit var save: AppCompatButton
-    private lateinit var cancel: AppCompatButton
+    private var nameLength = profile.firstName.value?.length ?: 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        layout = inflater.inflate(R.layout.fragment_profile_edit, container, false)
-        layout.run {
-            post {
-                title = findViewById(R.id.profile_form_title_text)
+        binding = FragmentProfileEditBinding.inflate(LayoutInflater.from(context)).apply {
+            with (profileForm) {
+                // Title
+                profileFormTitleText.setText(profile.title.value)
+                // Family Name
+                familyName.apply {
+                    profileFormFamilyText.setText(profile.familyName.value)
+                    profileEditFamilyHanjaText.text = profile.familyNameHanja.value
+                    profileEditFamilyHanjaCardview.setOnClickListener {
+                        HanjaSearchDialog.show(requireContext(),
+                            pronounce = profileFormFamilyText.text.toString(),
+                            currentHanja = profileEditFamilyHanjaText.text.toString()) { hanjaInfo ->
+                            profileEditFamilyHanjaText.text = hanjaInfo.hanja
+                        }
+                    }
+                }
+                // Name
+                profile.firstName.value?.forEachIndexed { idx, char ->
+                    addNameSlot(profileEditNameContainer, char.toString(), idx)
+                }
 
-                nameContainer = findViewById(R.id.profile_edit_name_container)
-                family = findViewById(R.id.profile_form_family_text)
-                familyHanjaCardView = findViewById(R.id.profile_edit_family_hanja_cardview)
-                familyHanjaTextView = findViewById(R.id.profile_edit_family_hanja_text)
+                // Birth
+                profileFormYear.setText(profile.getBirthDateOf(Calendar.YEAR).toString())
+                profileFormMonth.setText(profile.getBirthDateOf(Calendar.MONTH).toString())
+                profileFormDay.setText(profile.getBirthDateOf(Calendar.DAY_OF_MONTH).toString())
 
-                year = findViewById(R.id.profile_form_year)
-                month = findViewById(R.id.profile_form_month)
-                day = findViewById(R.id.profile_form_day)
+                profileFormHour.setText(profile.getBirthDateOf(Calendar.HOUR_OF_DAY).toString())
+                profileFormMinutes.setText(profile.getBirthDateOf(Calendar.MINUTE).toString())
 
-                hour = findViewById(R.id.profile_form_hour)
-                minutes = findViewById(R.id.profile_form_minutes)
+                // Gender
+                when (profile.gender.value) {
+                    Profile.Companion.Gender.MALE -> radioGroupGender.check(R.id.radio_gender_male)
+                    Profile.Companion.Gender.FEMALE -> radioGroupGender.check(R.id.radio_gender_female)
+                }
 
-                genderGroup = findViewById(R.id.radio_group_gender)
+                // Add Button
+                btnAddChar.apply {
+                    setOnClickListener {
+                        if (nameLength <= 2) {
+                            addNameSlot(profileEditNameContainer, null, nameLength)
+                            nameLength++
+                        } else {
+                            visibility = View.GONE
+                        }
+                    }
+                    if (profile.firstName.value?.length == 3) { // TODO
+                        visibility = View.GONE
+                    }
+                }
 
-                save = findViewById(R.id.save)
                 save.setOnClickListener {
                     saveProcess()
                     moveBackFragment()
                 }
-                cancel = findViewById(R.id.cancel)
                 cancel.setOnClickListener {
                     moveBackFragment()
                 }
-
-                loadFrom(profile)
             }
         }
-        return layout
+        return binding.root
     }
 
-    private fun loadFrom(profile: Profile) {
-        title.setText(profile.title.value)
-        family.setText(profile.familyName.value)
-        // Family name
-        familyHanjaTextView.text = profile.familyNameHanja.value
-        familyHanjaCardView.setOnClickListener {
-            HanjaSearchDialogUtil.show(this@ProfileEditFragment,
-                pronounce = family.text.toString(),
-                currentHanja = familyHanjaTextView.text.toString()) { hanjaInfo ->
-                // TODO observe live data, not doing like this manual update
-                profile.familyNameHanja.value = hanjaInfo.hanja
-                familyHanjaTextView.text = hanjaInfo.hanja
-            }
-        }
-        // Name
-        profile.firstName.value?.forEachIndexed { idx, char ->
-            View.inflate(requireContext(), R.layout.item_name_first, null).run {
-                post {
-                    val name = findViewById<EditText>(R.id.profile_edit_char_text)
-                    val nameHanjaCardView = findViewById<CardView>(R.id.profile_edit_hanja_cardview)
-                    val nameHanjaText = findViewById<TextView>(R.id.profile_edit_hanja_text)
-
-                    name.setText(char.toString())
-                    profile.firstNameHanja.value?.getHanjaAt(idx)?.let {
-                        nameHanjaText.text = it
-                    }
-                    nameHanjaCardView.setOnClickListener {
-                        HanjaSearchDialogUtil.show(this@ProfileEditFragment,
-                            pronounce = name.text.toString(),
-                            currentHanja = nameHanjaText.text.toString()) { hanjaInfo ->
-                            profile.firstNameHanja.value = profile.firstNameHanja.value?.replacedHanjaString(idx, hanjaInfo.hanja)
-                            nameHanjaText.text = hanjaInfo.hanja
-                        }
-                    }
-
-                    names.add(name)
-                    namesHanjaSelector.add(nameHanjaCardView)
-                }
-                nameContainer.addView(this)
-            }
-        }
-
-        year.setText(profile.getBirthDateOf(Calendar.YEAR).toString())
-        month.setText(profile.getBirthDateOf(Calendar.MONTH).toString())
-        day.setText(profile.getBirthDateOf(Calendar.DAY_OF_MONTH).toString())
-
-        hour.setText(profile.getBirthDateOf(Calendar.HOUR_OF_DAY).toString())
-        minutes.setText(profile.getBirthDateOf(Calendar.MINUTE).toString())
-
-        when (profile.gender.value) {
-            Profile.Companion.Gender.MALE -> genderGroup.check(R.id.radio_gender_male)
-            Profile.Companion.Gender.FEMALE -> genderGroup.check(R.id.radio_gender_female)
+    private fun addNameSlot(slotContainer: LinearLayout, char: String?, idx: Int) {
+        val slot = NameSlot(requireContext(), char, profile.firstNameHanja.value?.getHanjaAt(idx))
+        with (slot.binding) {
+            names.add(profileEditCharText)
+            namesHanja.add(profileEditHanjaText)
+            slotContainer.addView(root)
         }
     }
 
     private fun saveProcess() {
         // TODO save to DataStore in future
-        profile.title.value = title.text.toString()
-        profile.familyName.value = family.text.toString()
-        var firstName = ""
-        names.forEach { editText ->
-            firstName += editText.text.toString()
+        with (profile) {
+            title.value = binding.profileForm.profileFormTitleText.text.toString()
+
+            familyName.value = binding.profileForm.familyName.profileFormFamilyText.text.toString()
+            familyNameHanja.value = binding.profileForm.familyName.profileEditFamilyHanjaText.text.toString()
+
+            firstName.value = names.joinToString("") { v -> v.text.toString() }
+            firstNameHanja.value = namesHanja.joinToString("") { v -> v.text.toString() }
+
+            birthDate.value = getBirthDate()
+            gender.value = getGender()
         }
-        profile.firstName.value = firstName
-        profile.birthDate.value = getBirthDate()
-        profile.gender.value = getGender()
     }
 
     @Profile.Companion.Gender
     private fun getGender(): String? {
-        return when (genderGroup.checkedRadioButtonId) {
+        return when (binding.profileForm.radioGroupGender.checkedRadioButtonId) {
             R.id.radio_gender_male -> Profile.Companion.Gender.MALE
             R.id.radio_gender_female -> Profile.Companion.Gender.FEMALE
             else -> null
@@ -162,13 +128,16 @@ class ProfileEditFragment(
 
     private fun getBirthDate(): Calendar {
         return Calendar.getInstance().apply {
-            set(Calendar.YEAR, year.text.toString().toInt())
-            set(Calendar.MONTH, month.text.toString().toInt())
-            set(Calendar.DAY_OF_MONTH, day.text.toString().toInt())
-            set(Calendar.HOUR_OF_DAY, hour.text.toString().toInt())
-            set(Calendar.MINUTE, minutes.text.toString().toInt())
+            with (binding.profileForm) {
+                set(Calendar.YEAR, profileFormYear.text.toString().toInt())
+                set(Calendar.MONTH, profileFormMonth.text.toString().toInt())
+                set(Calendar.DAY_OF_MONTH, profileFormDay.text.toString().toInt())
+                set(Calendar.HOUR_OF_DAY, profileFormHour.text.toString().toInt())
+                set(Calendar.MINUTE, profileFormMinutes.text.toString().toInt())
+            }
         }
     }
+
     private fun moveBackFragment() {
         requireActivity().onBackPressedDispatcher.onBackPressed()
     }

@@ -48,9 +48,23 @@
             style="@style/cardview_separator"
             app:cardElevation="5dp"/>
         <LinearLayout
-            android:id="@+id/profile_edit_name_container"
-            style="@style/profile_form_container">
-            <include layout="@layout/item_name_family"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/profile_edit_name_container"
+                style="@style/profile_form_container">
+                <include android:id="@+id/family_name"
+                    layout="@layout/item_name_family"/>
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/btn_add_char"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/add_new_character"
+                android:src="@drawable/sym_fire"
+                android:scaleType="fitCenter" />
         </LinearLayout>
     </LinearLayout>
 
