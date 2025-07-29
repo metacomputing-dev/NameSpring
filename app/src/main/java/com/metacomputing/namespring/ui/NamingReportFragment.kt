@@ -2,6 +2,7 @@ package com.metacomputing.namespring.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,32 +11,30 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.metacomputing.namespring.R
+import com.metacomputing.namespring.databinding.FragmentNamingReportBinding
+import com.metacomputing.namespring.databinding.ListItemNamingReportCommonBinding
 import com.metacomputing.namespring.model.report.NamingReport
 
 class NamingReportFragment(
     private val report: NamingReport
 ): BaseFragment() {
-    private lateinit var layout: View
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var binding: FragmentNamingReportBinding
 
-    inner class NamingReportAdapter : RecyclerView.Adapter<NamingReportAdapter.ViewHolder>() {
-        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val cardView: CardView = view.findViewById(R.id.naming_report_item_cardview)
-            val titleView: TextView = view.findViewById(R.id.naming_report_item_title)
-            val descView: TextView = view.findViewById(R.id.naming_report_item_description)
-        }
+    private inner class NamingReportAdapter : RecyclerView.Adapter<NamingReportAdapter.ViewHolder>() {
+        inner class ViewHolder(val binding: ListItemNamingReportCommonBinding) : RecyclerView.ViewHolder(binding.root)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_naming_report_common, parent, false)
-            return ViewHolder(view)
+            return ViewHolder(ListItemNamingReportCommonBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
 
         override fun getItemCount() = report.reportItems.size
 
         @SuppressLint("ClickableViewAccessibility")
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.titleView.text = report.reportItems[position].title
-            holder.descView.text = report.reportItems[position].desc
+            with (holder.binding) {
+                namingReportItemTitle.text = report.reportItems[position].title
+                namingReportItemDescription.text = report.reportItems[position].desc
+            }
         }
     }
 
@@ -44,13 +43,13 @@ class NamingReportFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        layout = inflater.inflate(R.layout.fragment_naming_report, container, false)
-        layout.post {
-            recyclerView = layout.findViewById(R.id.naming_report_recycler_view)
-            recyclerView.layoutManager = LinearLayoutManager(inflater.context)
-            recyclerView.adapter = NamingReportAdapter()
+        FragmentNamingReportBinding.inflate(LayoutInflater.from(requireContext())).apply {
+            binding = this
+            namingReportRecyclerView.apply {
+                layoutManager = LinearLayoutManager(inflater.context)
+                adapter = NamingReportAdapter()
+            }
+            return root
         }
-
-        return layout
     }
 }

@@ -73,5 +73,6 @@
     <string name="hint_search_hanja_by_meaning">뜻 검색 (\'美\'를 찾는다면 \'아름다울\' 입력)</string>
     <string name="hint_hanja_mi">美</string>
     <string name="hint_hanja_meaning_mi">아름다울 미</string>
+    <string name="add_new_character">Add New Character</string>
 
 </resources>

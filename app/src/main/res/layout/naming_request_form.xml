@@ -19,7 +19,8 @@
         <LinearLayout
             android:id="@+id/naming_request_name_container"
             style="@style/profile_form_container">
-            <include layout="@layout/item_name_family"/>
+            <include android:id="@+id/familyNameContainer"
+                layout="@layout/item_name_family"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
