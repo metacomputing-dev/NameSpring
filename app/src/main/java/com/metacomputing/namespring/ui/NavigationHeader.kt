@@ -24,8 +24,8 @@ class NavigationHeader(
             with (binding) {
                 navigationHeaderCurrProfileTitle.text = title.value
                 navigationHeaderTvFullname.text =
-                    if (fullNameHanja.isNotEmpty()) "$fullName($fullNameHanja)"
-                    else fullName
+                    if (fullNameHanjaPrettyString.isNotEmpty()) "$fullNamePrettyString($fullNameHanjaPrettyString)"
+                    else fullNamePrettyString
 
                 navigationHeaderTvBirth.text = birthAsPrettyString
             }

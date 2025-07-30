@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.annotation.StringDef
 import androidx.lifecycle.MutableLiveData
+import com.metacomputing.namespring.utils.emptyIfUnderscore
 import java.util.Calendar
 import java.util.Locale
 import java.util.UUID
@@ -69,6 +70,12 @@ data class Profile(
         get() = familyName.value + firstName.value
     val fullNameHanja: String
         get() = familyNameHanja.value + firstNameHanja.value
+
+    val fullNamePrettyString: String
+        get() = familyName.value?.emptyIfUnderscore() + firstName.value?.emptyIfUnderscore()
+
+    val fullNameHanjaPrettyString: String
+        get() = familyNameHanja.value?.emptyIfUnderscore() + firstNameHanja.value?.emptyIfUnderscore()
 
     val birthAsString: String
         get() {

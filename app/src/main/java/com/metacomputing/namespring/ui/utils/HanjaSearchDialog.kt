@@ -81,10 +81,10 @@ object HanjaSearchDialog {
         }
     }
 
-    fun show(context: Context, pronounce: String, currentHanja: String? = null, onSelected: (HanjaInfo) -> Unit) {
+    fun show(context: Context, pronounce: String, currentHanja: String? = null, onSelected: (HanjaInfo?) -> Unit) {
         val binding = PopupHanjaSearchBinding.inflate(LayoutInflater.from(context))
         ViewUtils.showDialog(context, R.string.search_hanja_title, binding.root,
-            onCreateLayout = { layout ->
+            onCreateLayout = { _ ->
                 with (binding) {
                     etHanjaQuery.apply {
                         doOnTextChanged { _, _, _, _ ->
@@ -123,6 +123,10 @@ object HanjaSearchDialog {
                         binding.tvShowHanjaMeaning.text.toString(),
                         pronounce)
                 )
+            },
+            neutral = R.string.delete,
+            onNeutral = { _ ->
+                onSelected.invoke(null)
             }
         )
     }

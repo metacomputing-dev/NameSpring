@@ -1,7 +1,10 @@
 package com.metacomputing.namespring.control
 
+import android.util.Log
 import com.metacomputing.namespring.model.report.NamingReport
 import com.metacomputing.namespring.model.viewmodel.Profile
+import com.metacomputing.namespring.utils.getHanjaAt
+import com.metacomputing.namespring.utils.underscoreIfEmpty
 import com.metacomputing.seed.Seed
 import com.metacomputing.seed.model.HanjaSearchResult
 import java.util.Calendar
@@ -13,6 +16,8 @@ object SeedProxy {
     fun makeNamingReport(profile: Profile): ArrayList<NamingReport> {
         val reports = ArrayList<NamingReport>()
         val namingQuery = buildFormattedNameString(profile.fullName, profile.fullNameHanja)
+        Log.i(TAG, "Created Query from ${profile.fullName}(${profile.fullNameHanja}) to $namingQuery ")
+        Log.i(TAG, "Running Seed with params $namingQuery, ${profile.birthDate.value} ")
         profile.birthDate.value?.run {
             val results = Seed.searchNames(
                 query = namingQuery,
@@ -23,34 +28,29 @@ object SeedProxy {
                 minute = get(Calendar.MINUTE),
                 limit = 10000000
             )
-            results.run {
-                results.forEach {
-                    reports.add(
-                        NamingReport(
-                            it.fullName,
-                            it.totalScore,
-                            it.details.detailedScores.baleumOhaengScore.reason,
-                            it.details.detailedScores.baleumEumYangScore.reason,
-                            it.details.detailedScores.jawonOhaengScore.reason,
-                            it.details.detailedScores.hoeksuEumYangScore.reason,
-                            it.details.detailedScores.sajuNameOhaengScore.reason
-                        )
+            results.forEach {
+                reports.add(
+                    NamingReport(
+                        it.fullName,
+                        it.totalScore,
+                        it.details.detailedScores.baleumOhaengScore.reason,
+                        it.details.detailedScores.baleumEumYangScore.reason,
+                        it.details.detailedScores.jawonOhaengScore.reason,
+                        it.details.detailedScores.hoeksuEumYangScore.reason,
+                        it.details.detailedScores.sajuNameOhaengScore.reason
                     )
-                }
+                )
             }
         }
         return reports
     }
 
     private fun buildFormattedNameString(name: String, hanja: String): String {
-        fun toFormat(char: Char?): String {
-            return char?.toString() ?: "_"
+        var ret = ""
+        name.forEachIndexed { index, letter ->
+            ret += "[$letter/${hanja.getHanjaAt(index)}]"
         }
-        name.toList().run {
-            return "[${toFormat(name[0])}/${toFormat(hanja[0])}]" +
-                    "[${toFormat(name[1])}/${toFormat(hanja[1])}]" +
-                    "[${toFormat(name[2])}/${toFormat(hanja[2])}]"
-        }
+        return ret
     }
 
     fun getHanjaInfoByPronounce(pronounce: String): List<HanjaSearchResult> {

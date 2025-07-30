@@ -1,18 +1,22 @@
 package com.metacomputing.namespring.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.widget.doOnTextChanged
 import com.metacomputing.namespring.R
 import com.metacomputing.namespring.databinding.FragmentProfileEditBinding
 import com.metacomputing.namespring.model.viewmodel.Profile
 import com.metacomputing.namespring.ui.utils.HanjaSearchDialog
 import com.metacomputing.namespring.ui.utils.NameSlot
+import com.metacomputing.namespring.utils.emptyIfUnderscore
 import com.metacomputing.namespring.utils.getHanjaAt
+import com.metacomputing.namespring.utils.underscoreIfEmpty
 import java.util.Calendar
 
 class ProfileEditFragment(
@@ -36,13 +40,20 @@ class ProfileEditFragment(
                 profileFormTitleText.setText(profile.title.value)
                 // Family Name
                 familyName.apply {
-                    profileFormFamilyText.setText(profile.familyName.value)
-                    profileEditFamilyHanjaText.text = profile.familyNameHanja.value
+                    profileFormFamilyText.apply {
+                        setText(profile.familyName.value?.emptyIfUnderscore())
+                        doOnTextChanged { _, _, _, _ ->
+                            profileEditFamilyHanjaText.text = ""
+                        }
+                    }
+                    profileEditFamilyHanjaText.text = profile.familyNameHanja.value?.emptyIfUnderscore()
                     profileEditFamilyHanjaCardview.setOnClickListener {
+                        if (profileFormFamilyText.text.isEmpty()) return@setOnClickListener
+
                         HanjaSearchDialog.show(requireContext(),
                             pronounce = profileFormFamilyText.text.toString(),
                             currentHanja = profileEditFamilyHanjaText.text.toString()) { hanjaInfo ->
-                            profileEditFamilyHanjaText.text = hanjaInfo.hanja
+                            profileEditFamilyHanjaText.text = hanjaInfo?.hanja ?: ""
                         }
                     }
                 }
@@ -71,12 +82,17 @@ class ProfileEditFragment(
                         if (nameLength <= 2) {
                             addNameSlot(profileEditNameContainer, null, nameLength)
                             nameLength++
-                        } else {
-                            visibility = View.GONE
                         }
+                        updateSlotControlVisibility()
                     }
-                    if (profile.firstName.value?.length == 3) { // TODO
-                        visibility = View.GONE
+                }
+                btnDeleteChar.apply {
+                    setOnClickListener {
+                        if (nameLength > 0) {
+                            deleteNameSlot(profileEditNameContainer)
+                            nameLength--
+                        }
+                        updateSlotControlVisibility()
                     }
                 }
 
@@ -89,9 +105,22 @@ class ProfileEditFragment(
                 }
             }
         }
+        updateSlotControlVisibility()
         return binding.root
     }
 
+    private fun updateSlotControlVisibility() {
+        binding.profileForm.apply {
+            btnAddChar.visibility = View.VISIBLE
+            btnDeleteChar.visibility = View.VISIBLE
+            if (nameLength <= 0) {
+                btnDeleteChar.visibility = View.INVISIBLE
+            }
+            if (nameLength >= 3) {
+                btnAddChar.visibility = View.INVISIBLE
+            }
+        }
+    }
     private fun addNameSlot(slotContainer: LinearLayout, char: String?, idx: Int) {
         val slot = NameSlot(requireContext(), char, profile.firstNameHanja.value?.getHanjaAt(idx))
         with (slot.binding) {
@@ -101,16 +130,26 @@ class ProfileEditFragment(
         }
     }
 
+    private fun deleteNameSlot(slotContainer: LinearLayout) {
+        slotContainer.apply {
+            if (childCount > 1) {
+                removeViewAt(childCount - 1)
+            }
+            names.removeAt(names.size - 1)
+            namesHanja.removeAt(namesHanja.size - 1)
+        }
+    }
+
     private fun saveProcess() {
         // TODO save to DataStore in future
         with (profile) {
             title.value = binding.profileForm.profileFormTitleText.text.toString()
 
-            familyName.value = binding.profileForm.familyName.profileFormFamilyText.text.toString()
-            familyNameHanja.value = binding.profileForm.familyName.profileEditFamilyHanjaText.text.toString()
-
-            firstName.value = names.joinToString("") { v -> v.text.toString() }
-            firstNameHanja.value = namesHanja.joinToString("") { v -> v.text.toString() }
+            familyName.value = binding.profileForm.familyName.profileFormFamilyText.text.underscoreIfEmpty()
+            familyNameHanja.value = binding.profileForm.familyName.profileEditFamilyHanjaText.text.underscoreIfEmpty()
+            names.forEach { v -> Log.e("KWH", "origin ${v.text} -> ${v.text.underscoreIfEmpty()}") }
+            firstName.value = names.joinToString("") { v -> v.text.underscoreIfEmpty() }
+            firstNameHanja.value = namesHanja.joinToString("") { v -> v.text.underscoreIfEmpty() }
 
             birthDate.value = getBirthDate()
             gender.value = getGender()

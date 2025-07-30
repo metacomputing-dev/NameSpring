@@ -49,7 +49,7 @@ class ProfileListFragment: BaseFragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             with (holder.binding) {
                 profileListItemTitle.text = items[position].title.value
-                profileListItemName.text = items[position].fullName
+                profileListItemName.text = items[position].fullNamePrettyString
                 profileListItemBirthdate.text = items[position].birthAsString
                 profileListItemDragHandle.setOnTouchListener { _, event ->
                     if (event.action == MotionEvent.ACTION_DOWN) {

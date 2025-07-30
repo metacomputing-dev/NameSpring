@@ -4,11 +4,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorRes
-import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.graphics.drawable.toDrawable
 import com.metacomputing.namespring.R
@@ -24,8 +22,10 @@ object ViewUtils {
         bindingRoot: View,
         @StringRes ok: Int? = R.string.ok,
         @StringRes cancel: Int? = R.string.cancel,
+        @StringRes neutral: Int? = null,
         onCreateLayout: ((layout: View) -> Unit)? = null,
-        onPressedOk: ((layout: View) -> Unit)? = null
+        onPressedOk: ((layout: View) -> Unit)? = null,
+        onNeutral: ((layout: View) -> Unit)? = null
     ) {
         AlertDialog.Builder(context)
             .setTitle(title)
@@ -42,6 +42,12 @@ object ViewUtils {
                         dialog.dismiss()
                     }
                 }
+                neutral?.let {
+                    setNeutralButton(it) { dialog, _ ->
+                        onNeutral?.invoke(bindingRoot)
+                        dialog.dismiss()
+                    }
+                }
             }
             .create().apply {
                 bindingRoot.post {
@@ -51,19 +57,6 @@ object ViewUtils {
                 window?.setBackgroundDrawableResource(R.drawable.dialog_background)
                 show()
             }
-    }
-
-    fun showDialog(
-        context: Context,
-        @StringRes title: Int,
-        @LayoutRes layoutRes: Int,
-        @StringRes ok: Int? = R.string.ok,
-        @StringRes cancel: Int? = R.string.cancel,
-        onCreateLayout: ((layout: View) -> Unit)? = null,
-        onPressedOk: ((layout: View) -> Unit)? = null
-    ) {
-        val form = LayoutInflater.from(context).inflate(layoutRes, null)
-        showDialog(context, title, form, ok, cancel, onCreateLayout, onPressedOk)
     }
 }
 

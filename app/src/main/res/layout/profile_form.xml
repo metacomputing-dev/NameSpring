@@ -58,13 +58,29 @@
                 <include android:id="@+id/family_name"
                     layout="@layout/item_name_family"/>
             </LinearLayout>
-            <ImageView
-                android:id="@+id/btn_add_char"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:contentDescription="@string/add_new_character"
-                android:src="@drawable/sym_fire"
-                android:scaleType="fitCenter" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/btn_add_char"
+                    android:layout_width="33dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="@string/add_new_character"
+                    android:src="@drawable/add_box"
+                    android:scaleType="fitCenter"
+                    app:tint="@color/meta_blended_green" />
+                <ImageView
+                    android:id="@+id/btn_delete_char"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="@string/delete_last_character"
+                    android:src="@drawable/delete_boxy"
+                    android:scaleType="fitCenter"
+                    app:tint="@color/meta_red" />
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 

@@ -6,19 +6,28 @@ object StringUtils {
     // TODO put some here
 }
 
-fun String.getHanjaAt(index: Int): String {
-    val strings = toHanjaList()
-    return if (strings.size > index) strings[index] else ""
+fun CharSequence.underscoreIfEmpty(): String {
+    return if (isEmpty()) "_"
+    else toString().toLetterList().joinToString("") { it.ifEmpty { "_" } }
 }
 
-fun String.toHanjaList(): ArrayList<String> {
+fun String.emptyIfUnderscore(): String {
+    return toLetterList().joinToString("") { if (it == "_") "" else it }
+}
+
+fun String.getHanjaAt(index: Int): String {
+    val letters = toLetterList()
+    return if (letters.size > index) letters[index] else ""
+}
+
+fun String.toLetterList(): ArrayList<String> {
     return codePoints().toArray().map { Character.toChars(it).concatToString() }.toCollection(ArrayList())
 }
 
 fun String.appendOrReplaceHanja(index: Int, hanja: String): String {
-    with(toHanjaList()) {
+    with(toLetterList()) {
         if (hanja.isNotEmpty()) {
-            val newChar = hanja.toHanjaList()[0]
+            val newChar = hanja.toLetterList()[0]
 
             if (size > index) set(index, newChar)
             else if (size == index) add(newChar)

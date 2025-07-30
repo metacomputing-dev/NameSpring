@@ -6,13 +6,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.widget.doOnTextChanged
 import com.metacomputing.namespring.R
 import com.metacomputing.namespring.control.SeedProxy
 import com.metacomputing.namespring.control.TaskManager
 import com.metacomputing.namespring.databinding.NamingRequestFormBinding
 import com.metacomputing.namespring.model.report.NamingReport
 import com.metacomputing.namespring.model.viewmodel.Profile
+import com.metacomputing.namespring.utils.emptyIfUnderscore
 import com.metacomputing.namespring.utils.getHanjaAt
+import com.metacomputing.namespring.utils.underscoreIfEmpty
 
 object NamingRequestDialog {
     private const val TAG = "NamingRequestDialog"
@@ -30,13 +33,20 @@ object NamingRequestDialog {
                     binding.root,
                     onCreateLayout = { _ ->
                         with (familyNameContainer) {
-                            profileFormFamilyText.setText(familyName.value.toString())
-                            profileEditFamilyHanjaText.text = familyNameHanja.value?.getHanjaAt(0)
+                            profileFormFamilyText.apply {
+                                setText(familyName.value?.emptyIfUnderscore())
+                                doOnTextChanged { _, _, _, _ ->
+                                    profileEditFamilyHanjaText.text = ""
+                                }
+                            }
+                            profileEditFamilyHanjaText.text = familyNameHanja.value?.getHanjaAt(0)?.emptyIfUnderscore()
                             profileEditFamilyHanjaCardview.setOnClickListener {
+                                if (profileEditFamilyHanjaText.text.isEmpty()) return@setOnClickListener
+
                                 HanjaSearchDialog.show(context,
                                     pronounce = profileFormFamilyText.text.toString(),
                                     currentHanja = profileEditFamilyHanjaText.text.toString()) { hanjaInfo ->
-                                    profileEditFamilyHanjaText.text = hanjaInfo.hanja
+                                    profileEditFamilyHanjaText.text = hanjaInfo?.hanja ?: ""
                                 }
                             }
 
@@ -63,11 +73,12 @@ object NamingRequestDialog {
 
                         with (familyNameContainer) {
                             val profileForNaming = this@run.clone().apply {
-                                familyName.value = profileFormFamilyText.text.toString()
-                                familyNameHanja.value = profileEditFamilyHanjaText.text.toString()
-
-                                namesHanjaText.forEach { firstNameHanja.value += it.text }
-                                namesText.forEach { firstName.value += it.text }
+                                familyName.value = profileFormFamilyText.text.underscoreIfEmpty()
+                                familyNameHanja.value = profileEditFamilyHanjaText.text.underscoreIfEmpty()
+                                firstName.value = ""
+                                firstNameHanja.value = ""
+                                namesText.forEach { firstName.value += it.text.underscoreIfEmpty() }
+                                namesHanjaText.forEach { firstNameHanja.value += it.text.underscoreIfEmpty() }
                             }
                             Log.i(TAG, "Make Naming Report on Profile: $profileForNaming")
 
