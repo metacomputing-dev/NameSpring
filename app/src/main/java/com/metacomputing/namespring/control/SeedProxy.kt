@@ -4,7 +4,6 @@ import android.util.Log
 import com.metacomputing.namespring.model.report.NamingReport
 import com.metacomputing.namespring.model.viewmodel.Profile
 import com.metacomputing.namespring.utils.getHanjaAt
-import com.metacomputing.namespring.utils.underscoreIfEmpty
 import com.metacomputing.seed.Seed
 import com.metacomputing.seed.model.HanjaSearchResult
 import java.util.Calendar
@@ -12,14 +11,16 @@ import java.util.Calendar
 
 object SeedProxy {
     private const val TAG = "SeedProxy"
+    private val seed = Seed()
 
     fun makeNamingReport(profile: Profile): ArrayList<NamingReport> {
         val reports = ArrayList<NamingReport>()
         val namingQuery = buildFormattedNameString(profile.fullName, profile.fullNameHanja)
         Log.i(TAG, "Created Query from ${profile.fullName}(${profile.fullNameHanja}) to $namingQuery ")
         Log.i(TAG, "Running Seed with params $namingQuery, ${profile.birthDate.value} ")
+
         profile.birthDate.value?.run {
-            val results = Seed.searchNames(
+            val results = seed.searchNames(
                 query = namingQuery,
                 year = get(Calendar.YEAR),
                 month = get(Calendar.MONTH),
@@ -54,6 +55,6 @@ object SeedProxy {
     }
 
     fun getHanjaInfoByPronounce(pronounce: String): List<HanjaSearchResult> {
-        return Seed.searchHanjaByKorean(pronounce)
+        return seed.searchHanjaByKorean(pronounce)
     }
 }

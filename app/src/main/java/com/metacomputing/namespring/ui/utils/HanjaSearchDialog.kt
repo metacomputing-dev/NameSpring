@@ -8,6 +8,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.metacomputing.namespring.R
+import com.metacomputing.namespring.control.SeedProxy
 import com.metacomputing.namespring.control.TaskManager
 import com.metacomputing.namespring.databinding.ListItemSearchHanjaBinding
 import com.metacomputing.namespring.databinding.PopupHanjaSearchBinding
@@ -100,7 +101,7 @@ object HanjaSearchDialog {
                     var hanjaInfoList: MutableList<HanjaSearchResult>? = null
                     TaskManager.launch(context, "Search Hanja by $pronounce",
                         block = {
-                            hanjaInfoList = Seed.searchHanjaByKorean(pronounce).toMutableList()
+                            hanjaInfoList = SeedProxy.getHanjaInfoByPronounce(pronounce).toMutableList()
                         },
                         onSuccess = {
                             hanjaInfoList?.let {
