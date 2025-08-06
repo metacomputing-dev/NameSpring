@@ -11,9 +11,11 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.metacomputing.namespring.R
+import com.metacomputing.namespring.control.ProfileManager
 import com.metacomputing.namespring.databinding.FragmentNamingReportBinding
 import com.metacomputing.namespring.databinding.ListItemNamingReportCommonBinding
 import com.metacomputing.namespring.model.report.NamingReport
+import com.metacomputing.namespring.model.viewmodel.Profile
 
 class NamingReportFragment(
     private val report: NamingReport
@@ -34,10 +36,13 @@ class NamingReportFragment(
             with (holder.binding) {
                 namingReportItemTitle.text = report.reportItems[position].title
                 namingReportItemDescription.text = report.reportItems[position].desc
+                namingReportItemDetails.text = report.reportItems[position].details
+                namingReportItemScore.text = report.reportItems[position].scoreString
             }
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,6 +54,12 @@ class NamingReportFragment(
                 layoutManager = LinearLayoutManager(inflater.context)
                 adapter = NamingReportAdapter()
             }
+            ProfileManager.mainProfile?.clone()?.run {
+                namingReportHeaderTextProfileSummary.text =
+                    "${report.name}(${report.hanja}) ${gender.value} ($birthAsString)"
+            }
+            namingReportHeaderTextScore.text = "${report.totalScore}점"
+
             return root
         }
     }
