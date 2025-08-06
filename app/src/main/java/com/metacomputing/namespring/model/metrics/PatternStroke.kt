@@ -6,4 +6,8 @@ class PatternStroke(
     description: String,
     details: String,
     score: Int
-) : NameMetrics(topic, description, details, score)
+) : NameMetrics(topic, description, details, score) {
+    companion object {
+        val EMPTY = PatternStroke(description = "", details = "", score = 0)
+    }
+}

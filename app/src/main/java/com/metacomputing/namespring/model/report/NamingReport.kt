@@ -23,43 +23,65 @@ data class NamingReport(
 ) {
     companion object {
         fun build(nameEvaluationResult: NameEvaluationResult): NamingReport {
+            var totalOhaengString = ""
+            nameEvaluationResult.seongmyeonghak?.sajuNameOhaeng?.ohaengDistribution?.forEach {
+                totalOhaengString += it.key + ":" + it.value + ", "
+            }
+
             return with (nameEvaluationResult) {
                 NamingReport(
                     fullName,
                     fullNameHanja,
                     totalScore,
-                    "TODO\n 이름에 대한 종합 총평\n 생성 필요",
-                    PatternStroke(
-                        description = details.detailedScores.sageokSuriScore.reason,
-                        details = interpretation?.sageokSuriInterpretation?.let { it.overallFortune + "\n\n" + it.lifePathGuidance } ?: "",
-                        score = details.detailedScores.sageokSuriScore.score
-                    ),
-                    PatternStrokeElement(
-                        description = details.detailedScores.sageokSuriOhaengScore.reason,
-                        details = interpretation?.sageokSuriOhaengInterpretation?.recommendations ?: "",
-                        score = details.detailedScores.sageokSuriOhaengScore.score
-                    ),
-                    SoundElement(
-                        description = details.detailedScores.baleumOhaengScore.reason,
-                        details = interpretation?.baleumOhaengInterpretation?.recommendations ?: "",
-                        score = details.detailedScores.baleumOhaengScore.score
-                    ),
-                    SoundBalance(
-                        description = details.detailedScores.baleumEumYangScore.reason,
-                        details = interpretation?.baleumEumYangInterpretation?.recommendations ?: "",
-                        score = details.detailedScores.baleumEumYangScore.score
-                    ),
-                    StrokeBalance(
-                        description = details.detailedScores.hoeksuEumYangScore.reason,
-                        details = interpretation?.hoeksuEumYangInterpretation?.recommendations ?: "",
-                        score = details.detailedScores.hoeksuEumYangScore.score
-                    ),
-                    BornComplElement(
-                        description = details.detailedScores.sajuNameOhaengScore.reason,
-                        details = interpretation?.sajuOhaengInterpretation?.recommendations ?: "",
-                        score = details.detailedScores.sajuNameOhaengScore.score
-                    ),
-                    "interpretation?.sajuOhaengInterpretation?.ohaengDistribution"
+                    nameEvaluationResult.overallSummary?.overallSummary ?: "",
+                    seongmyeonghak?.sageokSuri?.let {
+                        PatternStroke(
+                            description = it.score?.reason ?: "",
+                            details = it.interpretation?.let { detail -> detail.overallFortune + "\n\n" + detail.lifePathGuidance } ?: "",
+                            score = it.score?.score ?: 0
+                        )
+                    } ?: PatternStroke.EMPTY,
+
+                    seongmyeonghak?.sageokSuriOhaeng?.let {
+                        PatternStrokeElement(
+                            description = it.score?.reason ?: "",
+                            details = it.interpretation?.let { detail -> detail.recommendations } ?: "",
+                            score = it.score?.score ?: 0
+                        )
+                    } ?: PatternStrokeElement.EMPTY,
+
+                    seongmyeonghak?.baleumOhaeng?.let {
+                        SoundElement(
+                            description = it.score?.reason ?: "",
+                            details = it.interpretation?.let { detail -> detail.recommendations } ?: "",
+                            score = it.score?.score ?: 0
+                        )
+                    } ?: SoundElement.EMPTY,
+
+                    seongmyeonghak?.baleumEumYang?.let {
+                        SoundBalance(
+                            description = it.score?.reason ?: "",
+                            details = it.interpretation?.let { detail -> detail.recommendations } ?: "",
+                            score = it.score?.score ?: 0
+                        )
+                    } ?: SoundBalance.EMPTY,
+
+                    seongmyeonghak?.sageokSuriEumYang?.let {
+                        StrokeBalance(
+                            description = it.score?.reason ?: "",
+                            details = it.interpretation?.let { detail -> detail.recommendations } ?: "",
+                            score = it.score?.score ?: 0
+                        )
+                    } ?: StrokeBalance.EMPTY,
+
+                    seongmyeonghak?.sajuNameOhaeng?.let {
+                        BornComplElement(
+                            description = it.score?.reason ?: "",
+                            details = it.interpretation?.let { detail -> detail.recommendations } ?: "",
+                            score = it.score?.score ?: 0
+                        )
+                    } ?: BornComplElement.EMPTY,
+                    totalOhaengString
                 )
             }
         }

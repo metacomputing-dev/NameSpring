@@ -6,4 +6,8 @@ class SoundBalance(
     description: String,
     details: String,
     score: Int
-) : NameMetrics(topic, description, details, score)
+) : NameMetrics(topic, description, details, score) {
+    companion object {
+        val EMPTY = SoundBalance(description = "", details = "", score = 0)
+    }
+}
