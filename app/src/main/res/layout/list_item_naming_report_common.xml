@@ -47,6 +47,28 @@
                 android:textStyle="bold"
                 android:textSize="14sp"/>
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/naming_report_item_piechart"
+                android:layout_margin="10dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:elevation="8dp"
+                android:visibility="gone"
+                android:background="@drawable/bg_chart_rounded" />
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/naming_report_item_linechart"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:elevation="8dp"
+                android:visibility="gone"
+                android:background="@drawable/bg_chart_rounded" />
+        </LinearLayout>
         <TextView
             android:id="@+id/naming_report_item_details"
             android:layout_width="match_parent"

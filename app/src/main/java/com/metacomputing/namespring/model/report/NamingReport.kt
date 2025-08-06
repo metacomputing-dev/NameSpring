@@ -5,6 +5,7 @@ import com.metacomputing.namespring.model.metrics.PatternStroke
 import com.metacomputing.namespring.model.metrics.PatternStrokeElement
 import com.metacomputing.namespring.model.metrics.SoundBalance
 import com.metacomputing.namespring.model.metrics.SoundElement
+import com.metacomputing.namespring.model.metrics.Statistics
 import com.metacomputing.namespring.model.metrics.StrokeBalance
 import com.metacomputing.seed.model.NameEvaluationResult
 
@@ -13,6 +14,7 @@ data class NamingReport(
     val hanja: String,
     val totalScore: Int,
     val overallReview: String,
+    val statistics: Statistics,
     val patternStroke: PatternStroke,
     val patternStrokeElement: PatternStrokeElement,
     val soundElement: SoundElement,
@@ -34,6 +36,16 @@ data class NamingReport(
                     fullNameHanja,
                     totalScore,
                     nameEvaluationResult.overallSummary?.overallSummary ?: "",
+                    statistics?.gender?.let {
+                        Statistics(
+                            description = it.characteristic,
+                            details = it.interpretation?.recommendations ?: "",
+                            maleRatio = it.malePercentage,
+                            rawData = statistics?.rawData,
+                            score = it.score
+                        )
+                    } ?: Statistics.EMPTY,
+
                     seongmyeonghak?.sageokSuri?.let {
                         PatternStroke(
                             description = it.score?.reason ?: "",
@@ -87,6 +99,7 @@ data class NamingReport(
         }
     }
     val reportItems = arrayListOf(
+        ReportItem.from(statistics),
         ReportItem.from(patternStroke),
         ReportItem.from(patternStrokeElement),
         ReportItem.from(soundElement),

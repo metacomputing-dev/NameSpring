@@ -6,12 +6,13 @@ data class ReportItem(
     val title: String,
     val desc: String,
     val details: String,
+    val sourceMetric: Any? = null,
     val score: Int = 0) {
     val scoreString: String = scoreToString()
 
     companion object {
         fun from(metric: NameMetrics): ReportItem {
-            return with (metric) { ReportItem(topic, toMultiLine(description), details, score) }
+            return with (metric) { ReportItem(topic, toMultiLine(description), details, metric, score) }
         }
 
         private fun toMultiLine(string: String): String { // TODO move it to seed engine
