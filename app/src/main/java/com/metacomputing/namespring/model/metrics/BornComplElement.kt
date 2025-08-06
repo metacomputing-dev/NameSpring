@@ -6,4 +6,8 @@ class BornComplElement(
     description: String,
     details: String,
     score: Int
-) : NameMetrics(topic, description, details, score)
+) : NameMetrics(topic, description, details, score) {
+    companion object {
+        val EMPTY = BornComplElement(description = "", details = "", score = 0)
+    }
+}

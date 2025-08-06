@@ -6,4 +6,8 @@ class SoundElement(
     description: String,
     details: String,
     score: Int
-) : NameMetrics(topic, description, details, score)
+) : NameMetrics(topic, description, details, score) {
+    companion object {
+        val EMPTY = SoundElement(description = "", details = "", score = 0)
+    }
+}
