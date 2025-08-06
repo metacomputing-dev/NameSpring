@@ -99,7 +99,7 @@ object HanjaSearchDialog {
                         else currentHanja.getHanjaAt(0)
                     hanjaListRecyclerView.layoutManager = LinearLayoutManager(context)
                     var hanjaInfoList: MutableList<HanjaSearchResult>? = null
-                    TaskManager.launch(context, "Search Hanja by $pronounce",
+                    TaskManager.launch("Search Hanja by $pronounce",
                         block = {
                             hanjaInfoList = SeedProxy.getHanjaInfoByPronounce(pronounce).toMutableList()
                         },

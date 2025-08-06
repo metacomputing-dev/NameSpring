@@ -82,7 +82,7 @@ object NamingRequestDialog {
                             }
                             Log.i(TAG, "Make Naming Report on Profile: $profileForNaming")
 
-                            TaskManager.launch(context,
+                            TaskManager.launch(
                                 "Make Naming Profile $profileForNaming",
                                 block = {
                                     val reports = SeedProxy.makeNamingReport(profileForNaming)

@@ -1,6 +1,5 @@
 package com.metacomputing.namespring.control
 
-import android.content.Context
 import android.util.Log
 import androidx.annotation.MainThread
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +17,6 @@ object TaskManager {
 
     @MainThread
     fun <T> launch(
-        context: Context,
         taskName: String = "Anonymous",
         scope: CoroutineScope = coroutineScope,
         vararg inputs: Any = arrayOf(Unit),
@@ -46,14 +44,13 @@ object TaskManager {
 
     @MainThread
     fun <T> launchOnMain(
-        context: Context,
         taskName: String = "Anonymous",
         vararg inputs: Any = arrayOf(Unit),
         block: suspend (Array<out Any>) -> T,
         onSuccess: (T) -> Unit = {},
         onError: (Throwable) -> Unit = {}
     ): Job {
-        return launch(context, taskName, coroutineMainScope,
+        return launch(taskName, coroutineMainScope,
             inputs = inputs,
             block, onSuccess, onError)
     }

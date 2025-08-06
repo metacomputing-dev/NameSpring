@@ -3,6 +3,7 @@ package com.metacomputing.namespring.control
 import android.util.Log
 import com.metacomputing.namespring.model.report.NamingReport
 import com.metacomputing.namespring.model.viewmodel.Profile
+import com.metacomputing.namespring.ui.utils.AndroidLogger
 import com.metacomputing.namespring.utils.getHanjaAt
 import com.metacomputing.seed.Seed
 import com.metacomputing.seed.model.HanjaSearchResult
@@ -11,7 +12,16 @@ import java.util.Calendar
 
 object SeedProxy {
     private const val TAG = "SeedProxy"
-    private val seed = Seed()
+    private var seed: Seed? = null
+    var initialized: Boolean = false
+        private set
+
+    fun initialize() {
+        Log.i(TAG, "Initialize SeedEngine")
+        seed = Seed(AndroidLogger())
+        Log.i(TAG, "SeedEngine initialization done.")
+        initialized = true
+    }
 
     fun makeNamingReport(profile: Profile): ArrayList<NamingReport> {
         val reports = ArrayList<NamingReport>()
@@ -20,7 +30,7 @@ object SeedProxy {
         Log.i(TAG, "Running Seed with params $namingQuery, ${profile.birthDate.value} ")
 
         profile.birthDate.value?.run {
-            val results = seed.searchNames(
+            val results = seed?.searchNames(
                 query = namingQuery,
                 year = get(Calendar.YEAR),
                 month = get(Calendar.MONTH),
@@ -29,7 +39,7 @@ object SeedProxy {
                 minute = get(Calendar.MINUTE),
                 limit = 10000000
             )
-            results.forEach {
+            results?.forEach {
                 reports.add(
                     NamingReport(
                         it.fullName,
@@ -55,6 +65,6 @@ object SeedProxy {
     }
 
     fun getHanjaInfoByPronounce(pronounce: String): List<HanjaSearchResult> {
-        return seed.searchHanjaByKorean(pronounce)
+        return seed?.searchHanjaByKorean(pronounce) ?: ArrayList()
     }
 }
