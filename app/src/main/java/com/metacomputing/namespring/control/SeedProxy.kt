@@ -24,44 +24,60 @@ object SeedProxy {
     }
 
     fun makeNamingReport(profile: Profile): ArrayList<NamingReport> {
-        val reports = ArrayList<NamingReport>()
-        val namingQuery = buildFormattedNameString(profile.fullName, profile.fullNameHanja)
-        Log.i(TAG, "Created Query from ${profile.fullName}(${profile.fullNameHanja}) to $namingQuery ")
-        Log.i(TAG, "Running Seed with params $namingQuery, ${profile.birthDate.value} ")
+        with (profile) {
+            val reports = ArrayList<NamingReport>()
+            val namingQuery = buildNamingQuery(fullName, fullNameHanja)
+            Log.i(TAG, "Created Query from ${fullName}(${fullNameHanja}) to $namingQuery ")
+            Log.i(TAG, "Running Seed with profile $profile")
 
-        profile.birthDate.value?.run {
-            val results = seed?.searchNames(
-                query = namingQuery,
-                year = get(Calendar.YEAR),
-                month = get(Calendar.MONTH),
-                day = get(Calendar.DAY_OF_MONTH),
-                hour = get(Calendar.HOUR_OF_DAY),
-                minute = get(Calendar.MINUTE),
-                limit = 10000000
-            )
-            results?.forEach {
-                reports.add(
-                    NamingReport(
-                        it.fullName,
-                        it.totalScore,
-                        it.details.detailedScores.baleumOhaengScore.reason,
-                        it.details.detailedScores.baleumEumYangScore.reason,
-                        it.details.detailedScores.jawonOhaengScore.reason,
-                        it.details.detailedScores.hoeksuEumYangScore.reason,
-                        it.details.detailedScores.sajuNameOhaengScore.reason
+            birthDate.value?.run {
+                val results = if (isCompleteQuery(namingQuery)) {
+                    arrayListOf(
+                        seed?.evaluateName(
+                            surname = familyName.value!!,
+                            surnameHanja = familyNameHanja.value!!,
+                            givenName = firstName.value!!,
+                            givenNameHanja = firstNameHanja.value!!,
+                            year = get(Calendar.YEAR),
+                            month = get(Calendar.MONTH),
+                            day = get(Calendar.DAY_OF_MONTH),
+                            hour = get(Calendar.HOUR_OF_DAY),
+                            minute = get(Calendar.MINUTE),
+                            targetGender = if (gender.value == Profile.Companion.Gender.FEMALE) "FM" else "M"
+                        )
                     )
-                )
+                } else {
+                    seed?.searchNames(
+                        query = namingQuery,
+                        year = get(Calendar.YEAR),
+                        month = get(Calendar.MONTH),
+                        day = get(Calendar.DAY_OF_MONTH),
+                        hour = get(Calendar.HOUR_OF_DAY),
+                        minute = get(Calendar.MINUTE),
+                        limit = 10000000
+                    )
+                }
+
+                results?.forEach { result ->
+                    result?.let {
+                        reports.add(NamingReport.build(it))
+                    }
+                }
             }
+            return reports
         }
-        return reports
     }
 
-    private fun buildFormattedNameString(name: String, hanja: String): String {
+    private fun buildNamingQuery(name: String, hanja: String): String {
         var ret = ""
         name.forEachIndexed { index, letter ->
             ret += "[$letter/${hanja.getHanjaAt(index)}]"
         }
         return ret
+    }
+
+    private fun isCompleteQuery(query: String): Boolean {
+        return !query.contains("_")
     }
 
     fun getHanjaInfoByPronounce(pronounce: String): List<HanjaSearchResult> {

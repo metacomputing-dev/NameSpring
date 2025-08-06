@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/cardview_profile_item"
+    style="@style/cardview_report_common"
     android:id="@+id/naming_report_item_cardview"
     app:cardCornerRadius="20dp"
     app:cardElevation="4dp">
@@ -9,26 +9,53 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:background="@color/meta_light_green">
-        <TextView
-            android:id="@+id/naming_report_item_title"
-            android:layout_margin="12dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@color/meta_blended_green">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:text="Title"
-            android:textSize="18sp"/>
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@color/meta_light_green">
+            <TextView
+                android:id="@+id/naming_report_item_title"
+                android:layout_margin="12dp"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:text="Title"
+                android:textStyle="bold"
+                android:textSize="22sp"/>
+            <TextView
+                android:id="@+id/naming_report_item_description"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="textStart"
+                android:ellipsize="end"
+                android:text="Description"
+                android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/naming_report_item_score"
+                android:layout_width="30dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAlignment="textStart"
+                android:ellipsize="end"
+                android:text="Score"
+                android:singleLine="true"
+                android:textStyle="bold"
+                android:textSize="14sp"/>
+        </LinearLayout>
         <TextView
-            android:id="@+id/naming_report_item_description"
-            android:layout_width="wrap_content"
+            android:id="@+id/naming_report_item_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="4"
-            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
             android:textAlignment="textStart"
             android:ellipsize="end"
-            android:text="Name"
+            android:text="Details"
             android:textSize="18sp"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

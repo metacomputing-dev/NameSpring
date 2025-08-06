@@ -15,6 +15,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
+import com.metacomputing.namespring.control.ProfileManager
 import com.metacomputing.namespring.control.SeedProxy
 import com.metacomputing.namespring.control.TaskManager
 import com.metacomputing.namespring.databinding.ActivityMainBinding
@@ -31,6 +32,7 @@ class MainActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         showSplashScreen()
+        ProfileManager.putMockup(baseContext) // TODO for debugging
         TaskManager.launch("Initialize Seed Engine",
             block = {
                 SeedProxy.initialize()

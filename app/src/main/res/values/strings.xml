@@ -76,5 +76,6 @@
     <string name="hint_hanja_meaning_mi">아름다울 미</string>
     <string name="add_new_character">Add New Character</string>
     <string name="delete_last_character">Delete Last Character</string>
+    <string name="title_overall">총 평</string>
 
 </resources>
