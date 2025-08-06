@@ -2,20 +2,15 @@ package com.metacomputing.namespring.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.metacomputing.namespring.R
 import com.metacomputing.namespring.control.ProfileManager
 import com.metacomputing.namespring.databinding.FragmentNamingReportBinding
 import com.metacomputing.namespring.databinding.ListItemNamingReportCommonBinding
 import com.metacomputing.namespring.model.report.NamingReport
-import com.metacomputing.namespring.model.viewmodel.Profile
 
 class NamingReportFragment(
     private val report: NamingReport

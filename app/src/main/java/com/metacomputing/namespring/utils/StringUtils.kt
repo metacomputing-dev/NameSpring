@@ -1,7 +1,5 @@
 package com.metacomputing.namespring.utils
 
-import android.util.Log
-
 object StringUtils {
     // TODO put some here
 }

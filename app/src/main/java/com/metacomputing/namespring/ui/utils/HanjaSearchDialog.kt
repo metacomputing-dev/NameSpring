@@ -13,7 +13,6 @@ import com.metacomputing.namespring.control.TaskManager
 import com.metacomputing.namespring.databinding.ListItemSearchHanjaBinding
 import com.metacomputing.namespring.databinding.PopupHanjaSearchBinding
 import com.metacomputing.namespring.utils.getHanjaAt
-import com.metacomputing.seed.Seed
 import com.metacomputing.seed.model.HanjaSearchResult
 
 object HanjaSearchDialog {
