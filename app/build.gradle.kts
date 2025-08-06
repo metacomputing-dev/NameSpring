@@ -45,6 +45,7 @@ android {
 
 dependencies {
     implementation(project(":seed"))
+    implementation(libs.mpandroidchart)
     implementation(libs.material)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.core.ktx)
