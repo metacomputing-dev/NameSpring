@@ -1,5 +1,6 @@
 package com.metacomputing.namespring.model.metrics
 
+// 발음음양
 class SoundBalance(
     topic: String = "발음음양",
     description: String,

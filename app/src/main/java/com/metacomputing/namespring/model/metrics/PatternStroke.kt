@@ -1,6 +1,6 @@
 package com.metacomputing.namespring.model.metrics
 
-//
+// 사격수리
 class PatternStroke(
     topic: String = "사격수리",
     description: String,

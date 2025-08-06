@@ -107,7 +107,6 @@ class MainActivity: AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Log.i(TAG, "Menu item selected ${item.itemId}")
-
         return super.onOptionsItemSelected(item)
     }
 }

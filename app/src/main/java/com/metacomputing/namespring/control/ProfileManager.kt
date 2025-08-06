@@ -33,7 +33,7 @@ object ProfileManager {
         if (setAsMain) mainProfile = profile
     }
 
-    fun getProfileById(id: String): Profile? {
+    private fun getProfileById(id: String): Profile? {
         return profiles.value?.first { profile -> profile.id == id }
     }
 
@@ -46,7 +46,7 @@ object ProfileManager {
 
     // TODO for debugging.
     fun putMockup(context: Context) {
-        with (profiles.value) {
+        profiles.value.apply {
             add(Profile
                 .new(context,
                     "DebugProfile: 최성수",
