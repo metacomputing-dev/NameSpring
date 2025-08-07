@@ -93,7 +93,8 @@ object NamingRequestDialog {
                                     }
                                     // TODO add loading UI
                                     onNamingResult.invoke(reports)
-                                })
+                                }
+                            )
                         }
                     })
             }

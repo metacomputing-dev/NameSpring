@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ import com.metacomputing.namespring.databinding.ActivityMainBinding
 import com.metacomputing.namespring.ui.HomeFragment
 import com.metacomputing.namespring.ui.NavigationHeader
 import com.metacomputing.namespring.ui.ProfileListFragment
+import com.metacomputing.namespring.ui.utils.ProgressManager
 
 class MainActivity: AppCompatActivity() {
     companion object {
@@ -41,6 +43,10 @@ class MainActivity: AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
+        ProgressManager.initialize(object: ProgressManager.ProgressProvider{
+            override fun onLoadMain(): ViewGroup { return binding.loadingOverlayMain }
+            override fun onLoadBackground(): ViewGroup { return binding.loadingOverlayBackground }
+        })
         setContentView(binding.root)
 
         WindowCompat.setDecorFitsSystemWindows(window, true)
