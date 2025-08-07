@@ -4,11 +4,14 @@ import android.util.Log
 import com.metacomputing.namespring.model.report.NamingReport
 import com.metacomputing.namespring.model.viewmodel.Profile
 import com.metacomputing.namespring.ui.utils.AndroidLogger
+import com.metacomputing.namespring.ui.utils.ProgressManager
 import com.metacomputing.namespring.utils.getHanjaAt
 import com.metacomputing.seed.Seed
+import com.metacomputing.seed.callback.DetailedProgress.Companion.parseJson
+import com.metacomputing.seed.callback.Progress
 import com.metacomputing.seed.model.HanjaSearchResult
+import com.metacomputing.seed.model.NameSearchProgressData
 import java.util.Calendar
-
 
 object SeedProxy {
     private const val TAG = "SeedProxy"
@@ -18,7 +21,27 @@ object SeedProxy {
 
     fun initialize() {
         Log.i(TAG, "Initialize SeedEngine")
-        seed = Seed(AndroidLogger())
+        seed = Seed(AndroidLogger(), object: Progress() {}.apply {
+            setCallbacks(
+                onProgress = { _, current, max, content ->
+                    var name = ""
+                    content?.run {
+                        val json = parseJson(this)
+                        if (json?.optString("type") == "name") {
+                            NameSearchProgressData.fromJson(json)?.let { data ->
+                                with (data) {
+                                    name = "$surname$givenName($surnameHanja$givenNameHanja)"
+                                }
+                            }
+                        }
+                    }
+                    ProgressManager.show(ProgressManager.Type.MAIN, TAG, name, current / max.toFloat())
+                },
+                onComplete = { _, _ ->
+                    ProgressManager.hide(ProgressManager.Type.MAIN, TAG)
+                }
+            )
+        })
         Log.i(TAG, "SeedEngine initialization done.")
         initialized = true
     }

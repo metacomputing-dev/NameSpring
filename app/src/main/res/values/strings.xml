@@ -78,5 +78,6 @@
     <string name="add_new_character">Add New Character</string>
     <string name="delete_last_character">Delete Last Character</string>
     <string name="title_overall">총 평</string>
+    <string name="loading">로딩 중</string>
 
 </resources>

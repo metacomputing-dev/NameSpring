@@ -22,6 +22,7 @@ import com.metacomputing.namespring.databinding.ActivityMainBinding
 import com.metacomputing.namespring.ui.HomeFragment
 import com.metacomputing.namespring.ui.NavigationHeader
 import com.metacomputing.namespring.ui.ProfileListFragment
+import com.metacomputing.namespring.ui.utils.ProgressManager
 
 class MainActivity: AppCompatActivity() {
     companion object {
@@ -41,6 +42,7 @@ class MainActivity: AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
+        ProgressManager.initialize { binding.loadingOverlay }
         setContentView(binding.root)
 
         WindowCompat.setDecorFitsSystemWindows(window, true)
