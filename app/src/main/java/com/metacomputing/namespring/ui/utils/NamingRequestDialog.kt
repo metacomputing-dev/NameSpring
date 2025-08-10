@@ -16,12 +16,15 @@ import com.metacomputing.namespring.model.viewmodel.Profile
 import com.metacomputing.namespring.utils.emptyIfUnderscore
 import com.metacomputing.namespring.utils.getHanjaAt
 import com.metacomputing.namespring.utils.underscoreIfEmpty
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 object NamingRequestDialog {
     private const val TAG = "NamingRequestDialog"
 
     @SuppressLint("SetTextI18n")
-    fun show(context: Context, profile: Profile, onNamingResult: (ArrayList<NamingReport>) -> Unit) {
+    fun show(context: Context, profile: Profile, onNamingResult: (query: String, ArrayList<NamingReport>) -> Unit) {
         val binding = NamingRequestFormBinding.inflate(LayoutInflater.from(context))
         val namesText = ArrayList<EditText>()
         val namesHanjaText = ArrayList<TextView>()
@@ -91,8 +94,9 @@ object NamingRequestDialog {
                                         // TODO too many items. cut for now
                                         reports.subList(30, reports.size).clear()
                                     }
-                                    // TODO add loading UI
-                                    onNamingResult.invoke(reports)
+                                    CoroutineScope(Dispatchers.Main).launch {
+                                        onNamingResult.invoke(profileForNaming.buildNamingQuery(), reports)
+                                    }
                                 }
                             )
                         }

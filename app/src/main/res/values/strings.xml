@@ -68,6 +68,7 @@
     <string name="naming_start">작명 시작</string>
     <string name="naming_result">작명 결과</string>
     <string name="naming_report">이름 평가 레포트</string>
+    <string name="naming_report_empty_message">해당 조건에서는 적합한 이름이 존재하지 않아요. 다른 조건으로 찾아보세요!</string>
 
     <!-- Hint -->
     <string name="hint_hanja">金</string>
