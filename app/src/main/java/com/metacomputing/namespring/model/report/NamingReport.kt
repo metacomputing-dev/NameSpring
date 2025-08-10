@@ -57,7 +57,7 @@ data class NamingReport(
                     seongmyeonghak?.sageokSuriOhaeng?.let {
                         PatternStrokeElement(
                             description = it.score?.reason ?: "",
-                            details = it.interpretation?.let { detail -> detail.recommendations } ?: "",
+                            details = it.interpretation?.recommendations ?: "",
                             score = it.score?.score ?: 0
                         )
                     } ?: PatternStrokeElement.EMPTY,
@@ -65,7 +65,7 @@ data class NamingReport(
                     seongmyeonghak?.baleumOhaeng?.let {
                         SoundElement(
                             description = it.score?.reason ?: "",
-                            details = it.interpretation?.let { detail -> detail.recommendations } ?: "",
+                            details = it.interpretation?.recommendations ?: "",
                             score = it.score?.score ?: 0
                         )
                     } ?: SoundElement.EMPTY,
@@ -73,7 +73,7 @@ data class NamingReport(
                     seongmyeonghak?.baleumEumYang?.let {
                         SoundBalance(
                             description = it.score?.reason ?: "",
-                            details = it.interpretation?.let { detail -> detail.recommendations } ?: "",
+                            details = it.interpretation?.recommendations ?: "",
                             score = it.score?.score ?: 0
                         )
                     } ?: SoundBalance.EMPTY,
@@ -81,7 +81,7 @@ data class NamingReport(
                     seongmyeonghak?.sageokSuriEumYang?.let {
                         StrokeBalance(
                             description = it.score?.reason ?: "",
-                            details = it.interpretation?.let { detail -> detail.recommendations } ?: "",
+                            details = it.interpretation?.recommendations ?: "",
                             score = it.score?.score ?: 0
                         )
                     } ?: StrokeBalance.EMPTY,
@@ -89,7 +89,7 @@ data class NamingReport(
                     seongmyeonghak?.sajuNameOhaeng?.let {
                         BornComplElement(
                             description = it.score?.reason ?: "",
-                            details = it.interpretation?.let { detail -> detail.recommendations } ?: "",
+                            details = it.interpretation?.recommendations ?: "",
                             score = it.score?.score ?: 0
                         )
                     } ?: BornComplElement.EMPTY,
