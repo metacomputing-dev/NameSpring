@@ -25,8 +25,6 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import java.time.Year
 
 class NamingReportFragment(
     private val report: NamingReport
@@ -96,7 +94,7 @@ class NamingReportFragment(
                     val popularity = ArrayList<Pair<Int,Int>>()
                     val entries = ArrayList<Entry>()
                     var startYear = 2008
-                    var endYear = Calendar.getInstance().get(Calendar.YEAR)
+                    val endYear = Calendar.getInstance().get(Calendar.YEAR)
                     yearlyPopularityRank.male.forEach {
                         val year = it.key.toInt()
                         val rank = it.value

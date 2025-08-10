@@ -24,7 +24,6 @@ object TaskManager {
         onSuccess: (T) -> Unit = {},
         onError: (Throwable) -> Unit = {}
     ): Job {
-        // TODO make a Common UI for loading
         return scope.launch {
             try {
                 Log.i(TAG, "launch task $taskName")

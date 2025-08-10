@@ -13,7 +13,7 @@ import com.metacomputing.namespring.R
 
 object ViewUtils {
     fun Resources.getColorDrawable(@ColorRes res: Int): ColorDrawable {
-        return getColor(res).toDrawable()
+        return getColor(res, null).toDrawable()
     }
 
     fun showDialog(
