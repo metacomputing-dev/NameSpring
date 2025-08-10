@@ -5,7 +5,6 @@ import com.metacomputing.namespring.model.report.NamingReport
 import com.metacomputing.namespring.model.viewmodel.Profile
 import com.metacomputing.namespring.ui.utils.AndroidLogger
 import com.metacomputing.namespring.ui.utils.ProgressManager
-import com.metacomputing.namespring.utils.getHanjaAt
 import com.metacomputing.seed.Seed
 import com.metacomputing.seed.callback.DetailedProgress.Companion.parseJson
 import com.metacomputing.seed.callback.Progress
@@ -49,7 +48,7 @@ object SeedProxy {
     fun makeNamingReport(profile: Profile): ArrayList<NamingReport> {
         with (profile) {
             val reports = ArrayList<NamingReport>()
-            val namingQuery = buildNamingQuery(fullName, fullNameHanja)
+            val namingQuery = buildNamingQuery()
             Log.i(TAG, "Created Query from ${fullName}(${fullNameHanja}) to $namingQuery ")
             Log.i(TAG, "Running Seed with profile $profile")
 
@@ -89,14 +88,6 @@ object SeedProxy {
             }
             return reports
         }
-    }
-
-    private fun buildNamingQuery(name: String, hanja: String): String {
-        var ret = ""
-        name.forEachIndexed { index, letter ->
-            ret += "[$letter/${hanja.getHanjaAt(index)}]"
-        }
-        return ret
     }
 
     private fun isCompleteQuery(query: String): Boolean {

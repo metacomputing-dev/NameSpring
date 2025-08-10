@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.annotation.StringDef
 import androidx.lifecycle.MutableLiveData
 import com.metacomputing.namespring.utils.emptyIfUnderscore
+import com.metacomputing.namespring.utils.getHanjaAt
 import java.util.Calendar
 import java.util.Locale
 import java.util.UUID
@@ -95,6 +96,14 @@ data class Profile(
 
     fun getBirthDateOf(fieldOfCalendar: Int): Int? {
         return birthDate.value?.get(fieldOfCalendar)
+    }
+
+    fun buildNamingQuery(): String {
+        var ret = ""
+        fullName.forEachIndexed { index, letter ->
+            ret += "[$letter/${fullNameHanja.getHanjaAt(index)}]"
+        }
+        return ret
     }
 
     fun clone(): Profile {
