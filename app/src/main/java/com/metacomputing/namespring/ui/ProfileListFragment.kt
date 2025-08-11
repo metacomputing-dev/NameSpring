@@ -2,6 +2,7 @@ package com.metacomputing.namespring.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -123,7 +124,6 @@ class ProfileListFragment: BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileListBinding.inflate(LayoutInflater.from(context)).apply {
-            if (ProfileManager.profiles.value == null) return@apply
             btnProfileNew.setOnClickListener {
                 openEditProfileFragment(
                     Profile.new(requireContext()).apply {
@@ -134,7 +134,7 @@ class ProfileListFragment: BaseFragment() {
             profileListRecyclerView.apply {
                 layoutManager = LinearLayoutManager(inflater.context)
                 adapter = ProfileListAdapter(
-                    ProfileManager.profiles.value!!.toMutableList(),
+                    ProfileManager.profiles.value.toMutableList(),
                     onMenuClick = { menuItemId, profile ->
                         when (menuItemId) {
                             R.id.menu_item_profile_set_main -> ProfileManager.mainProfile = profile

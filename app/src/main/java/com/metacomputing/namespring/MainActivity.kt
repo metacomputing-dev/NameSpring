@@ -16,10 +16,10 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
-import com.metacomputing.namespring.control.ProfileManager
 import com.metacomputing.namespring.control.SeedProxy
 import com.metacomputing.namespring.control.TaskManager
 import com.metacomputing.namespring.databinding.ActivityMainBinding
+import com.metacomputing.namespring.model.repository.UserDataCenter
 import com.metacomputing.namespring.ui.HomeFragment
 import com.metacomputing.namespring.ui.NavigationHeader
 import com.metacomputing.namespring.ui.ProfileListFragment
@@ -31,13 +31,14 @@ class MainActivity: AppCompatActivity() {
         private const val SPLASH_VISIBLE_MIN_DURATION = 1000L
     }
     private lateinit var binding: ActivityMainBinding
+    private val dataCenter = UserDataCenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         showSplashScreen()
-        ProfileManager.putMockup(baseContext) // TODO for debugging
         TaskManager.launch("Initialize Seed Engine",
             block = {
                 SeedProxy.initialize()
+                dataCenter.initialize(this)
             }
         )
 
@@ -72,7 +73,7 @@ class MainActivity: AppCompatActivity() {
     private fun showSplashScreen() {
         val splash = installSplashScreen()
         var splashVisible = true
-        splash.setKeepOnScreenCondition { splashVisible || !SeedProxy.initialized }
+        splash.setKeepOnScreenCondition { splashVisible || !SeedProxy.initialized || !dataCenter.initialized }
         Handler(Looper.getMainLooper()).postDelayed({
             splashVisible = false
         }, SPLASH_VISIBLE_MIN_DURATION)

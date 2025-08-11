@@ -19,6 +19,7 @@ data class Profile(
     val firstNameHanja: MutableLiveData<String>,
     val familyName: MutableLiveData<String>,
     val familyNameHanja: MutableLiveData<String>,
+    val id: String = UUID.randomUUID().toString()
     ) {
     companion object {
         @StringDef(Gender.MALE, Gender.FEMALE)
@@ -28,6 +29,30 @@ data class Profile(
                 const val MALE = "남"
                 const val FEMALE = "여"
             }
+        }
+
+        fun new(
+            title: String?,
+            locale: Locale?,
+            birthDate: Calendar?,
+            @Gender gender: String?,
+            firstName: String?,
+            firstNameHanja: String?,
+            familyName: String?,
+            familyNameHanja: String?,
+            id: String
+        ): Profile {
+            return Profile(
+                MutableLiveData<String>(title),
+                MutableLiveData<Locale>(locale),
+                MutableLiveData<Calendar>(birthDate),
+                MutableLiveData<String>(gender),
+                MutableLiveData<String>(firstName),
+                MutableLiveData<String>(firstNameHanja),
+                MutableLiveData<String>(familyName),
+                MutableLiveData<String>(familyNameHanja),
+                id
+            )
         }
 
         fun new(
@@ -48,7 +73,7 @@ data class Profile(
                 MutableLiveData<String>(firstName),
                 MutableLiveData<String>(firstNameHanja),
                 MutableLiveData<String>(familyName),
-                MutableLiveData<String>(familyNameHanja),
+                MutableLiveData<String>(familyNameHanja)
             )
         }
 
@@ -66,7 +91,7 @@ data class Profile(
         }
     }
 
-    val id: String = UUID.randomUUID().toString()
+    // Sugar syntax
     val fullName: String
         get() = familyName.value + firstName.value
     val fullNameHanja: String

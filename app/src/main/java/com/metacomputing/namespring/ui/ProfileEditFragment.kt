@@ -147,7 +147,6 @@ class ProfileEditFragment(
 
             familyName.value = binding.profileForm.familyName.profileFormFamilyText.text.underscoreIfEmpty()
             familyNameHanja.value = binding.profileForm.familyName.profileEditFamilyHanjaText.text.underscoreIfEmpty()
-            names.forEach { v -> Log.e("KWH", "origin ${v.text} -> ${v.text.underscoreIfEmpty()}") }
             firstName.value = names.joinToString("") { v -> v.text.underscoreIfEmpty() }
             firstNameHanja.value = namesHanja.joinToString("") { v -> v.text.underscoreIfEmpty() }
 
