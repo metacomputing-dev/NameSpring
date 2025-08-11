@@ -9,6 +9,10 @@ fun CharSequence.underscoreIfEmpty(): String {
     else toString().toLetterList().joinToString("") { it.ifEmpty { "_" } }
 }
 
+fun String?.getOrEmpty(): String {
+    return this ?: ""
+}
+
 fun String.emptyIfUnderscore(): String {
     return toLetterList().joinToString("") { if (it == "_") "" else it }
 }
