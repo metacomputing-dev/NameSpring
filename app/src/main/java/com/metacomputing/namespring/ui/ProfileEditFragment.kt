@@ -1,7 +1,6 @@
 package com.metacomputing.namespring.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.widget.doOnTextChanged
 import com.metacomputing.namespring.R
+import com.metacomputing.namespring.control.ProfileManager
 import com.metacomputing.namespring.databinding.FragmentProfileEditBinding
 import com.metacomputing.namespring.model.viewmodel.Profile
 import com.metacomputing.namespring.ui.utils.HanjaSearchDialog
@@ -28,6 +28,8 @@ class ProfileEditFragment(
     private var namesHanja = ArrayList<TextView>()
 
     private var nameLength = profile.firstName.value?.length ?: 0
+    private val isNewProfile: Boolean
+        get() = !ProfileManager.profiles.value.contains(profile)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -152,6 +154,9 @@ class ProfileEditFragment(
 
             birthDate.value = getBirthDate()
             gender.value = getGender()
+        }
+        if (isNewProfile) {
+            ProfileManager.add(profile, true)
         }
     }
 

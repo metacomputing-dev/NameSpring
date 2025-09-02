@@ -2,7 +2,9 @@ package com.metacomputing.namespring.control
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import com.metacomputing.namespring.model.viewmodel.Profile
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
@@ -10,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -50,15 +53,19 @@ object ProfileManager {
         if (setAsMain) mainProfile = profile
     }
 
-    private fun getProfileById(id: String): Profile? {
-        return profiles.value.first { profile -> profile.id == id }
-    }
-
     fun remove(profile: Profile) {
         if (profile == mainProfile) {
-            mainProfileId.value = null
+            mainProfileId.value = ""
         }
         profiles.update { it.remove(profile) }
+    }
+
+    fun contains(profile: Profile): Boolean {
+        return profiles.value.contains(profile)
+    }
+
+    private fun getProfileById(id: String): Profile? {
+        return profiles.value.first { profile -> profile.id == id }
     }
 
     fun observeProfiles(scope: CoroutineScope = CoroutineScope(Dispatchers.Main), onProfileUpdated: () -> Unit) {
@@ -67,6 +74,10 @@ object ProfileManager {
                 scope.launch { onProfileUpdated.invoke() }
             }
         }
+    }
+
+    fun observeProfiles(lifecycleOwner: LifecycleOwner, onProfileUpdated: () -> Unit) {
+        profiles.asLiveData().observe(lifecycleOwner) { onProfileUpdated }
     }
 
     // TODO for debugging.
