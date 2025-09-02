@@ -126,9 +126,7 @@ class ProfileListFragment: BaseFragment() {
         binding = FragmentProfileListBinding.inflate(LayoutInflater.from(context)).apply {
             btnProfileNew.setOnClickListener {
                 openEditProfileFragment(
-                    Profile.new(requireContext()).apply {
-                        ProfileManager.add(this, true)
-                    }
+                    Profile.new(requireContext())
                 )
             }
             profileListRecyclerView.apply {
@@ -141,11 +139,13 @@ class ProfileListFragment: BaseFragment() {
                             R.id.menu_item_profile_delete -> ProfileManager.remove(profile)
                             R.id.menu_item_profile_edit -> openEditProfileFragment(profile)
                         }
-                        adapter?.notifyDataSetChanged()
                     }, dragListener
                 ).also {
                     itemTouchHelper = ItemTouchHelper(ProfileItemTouchHelperCallback(it))
                     itemTouchHelper.attachToRecyclerView(profileListRecyclerView)
+                }
+                ProfileManager.observeProfiles(viewLifecycleOwner) {
+                    adapter?.notifyDataSetChanged()
                 }
             }
         }
