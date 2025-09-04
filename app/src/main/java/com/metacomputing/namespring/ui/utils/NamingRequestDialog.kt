@@ -90,10 +90,6 @@ object NamingRequestDialog {
                                 block = {
                                     val reports = SeedProxy.makeNamingReport(profileForNaming)
                                     Log.i(TAG, "Created Naming reports (size=${reports.size})")
-                                    if (reports.size > 30) {
-                                        // TODO too many items. cut for now
-                                        reports.subList(30, reports.size).clear()
-                                    }
                                     CoroutineScope(Dispatchers.Main).launch {
                                         onNamingResult.invoke(profileForNaming.buildNamingQuery(), reports)
                                     }

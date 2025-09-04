@@ -8,4 +8,7 @@ interface UserDataSource {
     suspend fun loadProfileData(context: Context): List<Profile>
     suspend fun saveProfileSelection(context: Context)
     suspend fun loadProfileSelection(context: Context): String
+
+    suspend fun saveFavorites(context: Context)
+    suspend fun loadFavorites(context: Context): List<Profile>
 }

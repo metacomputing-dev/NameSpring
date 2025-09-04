@@ -2,6 +2,7 @@ package com.metacomputing.namespring.model.repository
 
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.metacomputing.namespring.control.FavoriteManager
 import com.metacomputing.namespring.control.ProfileManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +36,7 @@ class UserDataCenter(
         mainScope.launch {
             val profiles = localDataSource.loadProfileData(activity)
             val selectionId = localDataSource.loadProfileSelection(activity)
+            val favorites = localDataSource.loadFavorites(activity)
 
             Log.i(TAG, "Loading profile data from local data source (size=${profiles.size}")
             ProfileManager.loadProfiles(activity, profiles)
@@ -42,6 +44,9 @@ class UserDataCenter(
                 ProfileManager.mainProfileId.value = selectionId
                 Log.i(TAG, "Loading profile selection from local data source (title=${ProfileManager.mainProfile}")
             }
+
+            Log.i(TAG, "Loading favorites from local data source (size=${favorites.size}")
+            FavoriteManager.load(favorites)
 
             ProfileManager.observeProfileSelection(activity, ioScope) { id ->
                 if (id.isEmpty() || ProfileManager.getProfileById(id) != null) {
@@ -53,6 +58,11 @@ class UserDataCenter(
             ProfileManager.observeProfiles(activity, ioScope) {
                 localDataSource.saveProfileData(activity.baseContext)
                 Log.i(TAG, "saved profile data")
+            }
+
+            FavoriteManager.observeFavorites(activity, ioScope) {
+                localDataSource.saveFavorites(activity)
+                Log.i(TAG, "saved favorites")
             }
 
             initialized = true

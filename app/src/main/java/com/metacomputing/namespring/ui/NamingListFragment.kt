@@ -1,13 +1,19 @@
 package com.metacomputing.namespring.ui
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.metacomputing.namespring.R
+import com.metacomputing.namespring.control.FavoriteManager
 import com.metacomputing.namespring.databinding.FragmentNamingListBinding
 import com.metacomputing.namespring.databinding.ListItemNamingResultBinding
 import com.metacomputing.namespring.model.report.NamingReport
@@ -42,6 +48,24 @@ class NamingListFragment(
                 }
                 namingListItemName.text = items[position].name
                 namingListItemScore.text = items[position].totalScore.toString()
+                namingListItemAddFavorite.apply {
+                    items[position].toProfile()?.let {
+                        setTintRes(if (FavoriteManager.contains(it)) R.color.meta_deep_yellow else R.color.white)
+                    }
+
+                    setOnClickListener {
+                        namingListItemAddFavorite.imageTintList
+                        items[position].toProfile()?.let { profile ->
+                            if (!FavoriteManager.contains(profile)) {
+                                FavoriteManager.add(profile)
+                                setTintRes(R.color.meta_deep_yellow)
+                            } else {
+                                FavoriteManager.remove(profile)
+                                setTintRes(R.color.white)
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -66,5 +90,10 @@ class NamingListFragment(
             }
             return root
         }
+    }
+
+    fun ImageView.setTintRes(@ColorRes res: Int) {
+        val c = ContextCompat.getColor(context, res)
+        ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(c))
     }
 }

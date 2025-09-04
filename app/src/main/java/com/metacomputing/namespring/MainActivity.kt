@@ -20,6 +20,7 @@ import com.metacomputing.namespring.control.SeedProxy
 import com.metacomputing.namespring.control.TaskManager
 import com.metacomputing.namespring.databinding.ActivityMainBinding
 import com.metacomputing.namespring.model.repository.UserDataCenter
+import com.metacomputing.namespring.ui.FavoriteListFragment
 import com.metacomputing.namespring.ui.HomeFragment
 import com.metacomputing.namespring.ui.NavigationHeader
 import com.metacomputing.namespring.ui.ProfileListFragment
@@ -99,6 +100,7 @@ class MainActivity: AppCompatActivity() {
                 when (item.itemId) {
                     R.id.menu_item_home -> openFragment(HomeFragment())
                     R.id.menu_item_profile_management -> openFragment(ProfileListFragment())
+                    R.id.menu_item_favorite_management -> openFragment(FavoriteListFragment())
                 }
                 mainDrawerLayout.closeDrawer(GravityCompat.START)
                 true
