@@ -80,5 +80,7 @@
     <string name="delete_last_character">Delete Last Character</string>
     <string name="title_overall">총 평</string>
     <string name="loading">로딩 중</string>
+    <string name="menu_item_title_favorites">즐겨찾기 관리</string>
+    <string name="favorite_management">즐겨찾기 관리</string>
 
 </resources>

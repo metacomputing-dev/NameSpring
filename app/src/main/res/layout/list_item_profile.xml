@@ -59,5 +59,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/outline_drag_handle_24"/>
+        <ImageView
+            android:id="@+id/favorite_list_item_delete"
+            android:visibility="gone"
+            android:layout_marginRight="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/delete_boxy"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

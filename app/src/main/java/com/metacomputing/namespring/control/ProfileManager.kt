@@ -50,8 +50,10 @@ object ProfileManager {
             Log.i(TAG, "Loaded empty profiles. using mockup data instead")
             listProfiles = getMockupList(context)
         }
-        profiles.value = profiles.value.clear()
-        profiles.value = profiles.value.addAll(listProfiles)
+        profiles.update {
+            it.clear()
+            it.addAll(listProfiles)
+        }
         if (list.isEmpty()) {
             mainProfile = listProfiles.last()
         }
