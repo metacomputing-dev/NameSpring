@@ -53,7 +53,7 @@ data class DTOProfile(
     val title: String,
     val locale: Locale,
     val birthDate: Calendar,
-    @Gender val gender: String,
+    @param:Gender val gender: String,
     val firstName: String,
     val firstNameHanja: String,
     val familyName: String,
@@ -67,14 +67,14 @@ data class DTOProfile(
         fun from(profile: Profile): DTOProfile {
             with (profile) {
                 return DTOProfile(
-                    title = title.value.getOrEmpty(),
-                    locale = locale.value ?: Locale.getDefault(),
-                    birthDate = birthDate.value ?: Calendar.getInstance(),
-                    gender = gender.value.getOrEmpty(),
-                    firstName = firstName.value.getOrEmpty(),
-                    firstNameHanja = firstNameHanja.value.getOrEmpty(),
-                    familyName = familyName.value.getOrEmpty(),
-                    familyNameHanja = familyNameHanja.value.getOrEmpty(),
+                    title = title.getOrEmpty(),
+                    locale = locale,
+                    birthDate = birthDate,
+                    gender = gender.getOrEmpty(),
+                    firstName = firstName.getOrEmpty(),
+                    firstNameHanja = firstNameHanja.getOrEmpty(),
+                    familyName = familyName.getOrEmpty(),
+                    familyNameHanja = familyNameHanja.getOrEmpty(),
                     id = id,
                 )
             }
@@ -85,7 +85,7 @@ data class DTOProfile(
         get() = DTO.JSON.encodeToString(serializer<DTOProfile>(), this)
 
     fun toProfile(): Profile {
-        return Profile.new(
+        return Profile(
             title,
             locale,
             birthDate,

@@ -37,12 +37,12 @@ object NamingRequestDialog {
                     onCreateLayout = { _ ->
                         with (familyNameContainer) {
                             profileFormFamilyText.apply {
-                                setText(familyName.value?.emptyIfUnderscore())
+                                setText(familyName.emptyIfUnderscore())
                                 doOnTextChanged { _, _, _, _ ->
                                     profileEditFamilyHanjaText.text = ""
                                 }
                             }
-                            profileEditFamilyHanjaText.text = familyNameHanja.value?.getHanjaAt(0)?.emptyIfUnderscore()
+                            profileEditFamilyHanjaText.text = familyNameHanja.getHanjaAt(0)?.emptyIfUnderscore()
                             profileEditFamilyHanjaCardview.setOnClickListener {
                                 if (profileEditFamilyHanjaText.text.isEmpty()) return@setOnClickListener
 
@@ -53,8 +53,8 @@ object NamingRequestDialog {
                                 }
                             }
 
-                            firstName.value?.forEachIndexed { idx, char ->
-                                NameSlot(context, char.toString(), firstNameHanja.value?.getHanjaAt(idx)).binding.run {
+                            firstName.forEachIndexed { idx, char ->
+                                NameSlot(context, char.toString(), firstNameHanja.getHanjaAt(idx)).binding.run {
                                     namesText.add(profileEditCharText)
                                     namesHanjaText.add(profileEditHanjaText)
                                     namingRequestNameContainer.addView(root)
@@ -63,7 +63,7 @@ object NamingRequestDialog {
                         }
                     },
                     onPressedOk = { _ ->
-                        var requiredName: String = familyName.value ?: ""
+                        var requiredName: String = familyName
 
                         with (namingRequestNameContainer) {
                             // TODO currently there's no limitation of the length of the naming
@@ -76,12 +76,12 @@ object NamingRequestDialog {
 
                         with (familyNameContainer) {
                             val profileForNaming = this@run.clone().apply {
-                                familyName.value = profileFormFamilyText.text.underscoreIfEmpty()
-                                familyNameHanja.value = profileEditFamilyHanjaText.text.underscoreIfEmpty()
-                                firstName.value = ""
-                                firstNameHanja.value = ""
-                                namesText.forEach { firstName.value += it.text.underscoreIfEmpty() }
-                                namesHanjaText.forEach { firstNameHanja.value += it.text.underscoreIfEmpty() }
+                                familyName = profileFormFamilyText.text.underscoreIfEmpty()
+                                familyNameHanja = profileEditFamilyHanjaText.text.underscoreIfEmpty()
+                                firstName = ""
+                                firstNameHanja = ""
+                                namesText.forEach { firstName += it.text.underscoreIfEmpty() }
+                                namesHanjaText.forEach { firstNameHanja += it.text.underscoreIfEmpty() }
                             }
                             Log.i(TAG, "Make Naming Report on Profile: $profileForNaming")
 
