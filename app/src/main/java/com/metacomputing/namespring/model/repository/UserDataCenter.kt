@@ -5,41 +5,58 @@ import androidx.appcompat.app.AppCompatActivity
 import com.metacomputing.namespring.control.ProfileManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.dropWhile
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class UserDataCenter(
     private val localDataSource: UserDataSource = LocalDataSource()
     // TODO add server data source
 ) {
+    companion object {
+        const val TAG = "UserDataCenter"
+        @Volatile
+        private var instance: UserDataCenter? = null
+
+        fun getInstance(): UserDataCenter {
+            if (instance == null) {
+                instance = UserDataCenter()
+            }
+            return instance!!
+        }
+    }
     var initialized = false
         private set
 
+    private val mainScope = CoroutineScope(Dispatchers.Main)
     private val ioScope = CoroutineScope(Dispatchers.IO)
     // TODO run CRUD tasks in async
 
     fun initialize(activity: AppCompatActivity) {
-        runBlocking {
-            // Load profile data
-            localDataSource.loadProfileData(activity.baseContext).take(1).collect {
-                if (it.isNotEmpty()) { // TODO remove this case after debugging.
-                    ProfileManager.load(it)
-                } else {
-                    ProfileManager.putMockup(activity) // TODO for debugging
-                }
-                initialized = true
+        // Load and observe profile data
+        mainScope.launch {
+            val profiles = localDataSource.loadProfileData(activity)
+            val selectionId = localDataSource.loadProfileSelection(activity)
 
-                // Observe profile to sync data with dropping once because of the loading process
-                ProfileManager.profiles.dropWhile { !ProfileManager.isLoaded }.collect { list ->
-                    ioScope.launch {
-                        // TODO optimize it
-                        localDataSource.saveProfileData(activity.baseContext).take(1).collect {}
-                    }
+            Log.i(TAG, "Loading profile data from local data source (size=${profiles.size}")
+            ProfileManager.loadProfiles(activity, profiles)
+            if (selectionId.isNotEmpty() && ProfileManager.getProfileById(selectionId) != null) {
+                ProfileManager.mainProfileId.value = selectionId
+                Log.i(TAG, "Loading profile selection from local data source (title=${ProfileManager.mainProfile}")
+            }
+
+            ProfileManager.observeProfileSelection(activity, ioScope) { id ->
+                if (id.isEmpty() || ProfileManager.getProfileById(id) != null) {
+                    localDataSource.saveProfileSelection(activity)
+                    Log.i(TAG, "saved main profile selection to ${ProfileManager.getProfileById(id) ?: "EMPTY"}")
                 }
             }
+
+            ProfileManager.observeProfiles(activity, ioScope) {
+                localDataSource.saveProfileData(activity.baseContext)
+                Log.i(TAG, "saved profile data")
+            }
+
+            initialized = true
+            Log.i(TAG, "Initialized")
         }
     }
 }

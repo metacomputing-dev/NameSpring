@@ -31,14 +31,14 @@ class MainActivity: AppCompatActivity() {
         private const val SPLASH_VISIBLE_MIN_DURATION = 1000L
     }
     private lateinit var binding: ActivityMainBinding
-    private val dataCenter = UserDataCenter()
+    private val dataCenter = UserDataCenter.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         showSplashScreen()
+        dataCenter.initialize(this)
         TaskManager.launch("Initialize Seed Engine",
             block = {
                 SeedProxy.initialize()
-                dataCenter.initialize(this)
             }
         )
 

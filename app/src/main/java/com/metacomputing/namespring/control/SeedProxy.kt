@@ -52,20 +52,20 @@ object SeedProxy {
             Log.i(TAG, "Created Query from ${fullName}(${fullNameHanja}) to $namingQuery ")
             Log.i(TAG, "Running Seed with profile $profile")
 
-            birthDate.value?.run {
+            birthDate.run {
                 val results = if (isCompleteQuery(namingQuery)) {
                     arrayListOf(
                         seed?.evaluateName(
-                            surname = familyName.value!!,
-                            surnameHanja = familyNameHanja.value!!,
-                            givenName = firstName.value!!,
-                            givenNameHanja = firstNameHanja.value!!,
+                            surname = familyName,
+                            surnameHanja = familyNameHanja,
+                            givenName = firstName,
+                            givenNameHanja = firstNameHanja,
                             year = get(Calendar.YEAR),
                             month = get(Calendar.MONTH),
                             day = get(Calendar.DAY_OF_MONTH),
                             hour = get(Calendar.HOUR_OF_DAY),
                             minute = get(Calendar.MINUTE),
-                            targetGender = if (gender.value == Profile.Companion.Gender.FEMALE) "FM" else "M"
+                            targetGender = if (gender == Profile.Companion.Gender.FEMALE) "FM" else "M"
                         )
                     )
                 } else {

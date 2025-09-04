@@ -22,7 +22,7 @@ class NavigationHeader(
     fun updateHeader() {
         ProfileManager.mainProfile?.apply {
             with (binding) {
-                navigationHeaderCurrProfileTitle.text = title.value
+                navigationHeaderCurrProfileTitle.text = title
                 navigationHeaderTvFullname.text =
                     if (fullNameHanjaPrettyString.isNotEmpty()) "$fullNamePrettyString($fullNameHanjaPrettyString)"
                     else fullNamePrettyString

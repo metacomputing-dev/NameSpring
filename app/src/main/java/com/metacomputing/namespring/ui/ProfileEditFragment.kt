@@ -27,7 +27,7 @@ class ProfileEditFragment(
     private var names = ArrayList<EditText>()
     private var namesHanja = ArrayList<TextView>()
 
-    private var nameLength = profile.firstName.value?.length ?: 0
+    private var nameLength = profile.firstName.length
     private val isNewProfile: Boolean
         get() = !ProfileManager.profiles.value.contains(profile)
 
@@ -39,16 +39,16 @@ class ProfileEditFragment(
         binding = FragmentProfileEditBinding.inflate(LayoutInflater.from(context)).apply {
             with (profileForm) {
                 // Title
-                profileFormTitleText.setText(profile.title.value)
+                profileFormTitleText.setText(profile.title)
                 // Family Name
                 familyName.apply {
                     profileFormFamilyText.apply {
-                        setText(profile.familyName.value?.emptyIfUnderscore())
+                        setText(profile.familyName.emptyIfUnderscore())
                         doOnTextChanged { _, _, _, _ ->
                             profileEditFamilyHanjaText.text = ""
                         }
                     }
-                    profileEditFamilyHanjaText.text = profile.familyNameHanja.value?.emptyIfUnderscore()
+                    profileEditFamilyHanjaText.text = profile.familyNameHanja.emptyIfUnderscore()
                     profileEditFamilyHanjaCardview.setOnClickListener {
                         if (profileFormFamilyText.text.isEmpty()) return@setOnClickListener
 
@@ -60,7 +60,7 @@ class ProfileEditFragment(
                     }
                 }
                 // Name
-                profile.firstName.value?.forEachIndexed { idx, char ->
+                profile.firstName.forEachIndexed { idx, char ->
                     addNameSlot(profileEditNameContainer, char.toString(), idx)
                 }
 
@@ -73,7 +73,7 @@ class ProfileEditFragment(
                 profileFormMinutes.setText(profile.getBirthDateOf(Calendar.MINUTE).toString())
 
                 // Gender
-                when (profile.gender.value) {
+                when (profile.gender) {
                     Profile.Companion.Gender.MALE -> radioGroupGender.check(R.id.radio_gender_male)
                     Profile.Companion.Gender.FEMALE -> radioGroupGender.check(R.id.radio_gender_female)
                 }
@@ -124,7 +124,7 @@ class ProfileEditFragment(
         }
     }
     private fun addNameSlot(slotContainer: LinearLayout, char: String?, idx: Int) {
-        val slot = NameSlot(requireContext(), char, profile.firstNameHanja.value?.getHanjaAt(idx))
+        val slot = NameSlot(requireContext(), char, profile.firstNameHanja.getHanjaAt(idx))
         with (slot.binding) {
             names.add(profileEditCharText)
             namesHanja.add(profileEditHanjaText)
@@ -145,18 +145,20 @@ class ProfileEditFragment(
     private fun saveProcess() {
         // TODO save to DataStore in future
         with (profile) {
-            title.value = binding.profileForm.profileFormTitleText.text.toString()
+            title = binding.profileForm.profileFormTitleText.text.toString()
 
-            familyName.value = binding.profileForm.familyName.profileFormFamilyText.text.underscoreIfEmpty()
-            familyNameHanja.value = binding.profileForm.familyName.profileEditFamilyHanjaText.text.underscoreIfEmpty()
-            firstName.value = names.joinToString("") { v -> v.text.underscoreIfEmpty() }
-            firstNameHanja.value = namesHanja.joinToString("") { v -> v.text.underscoreIfEmpty() }
+            familyName = binding.profileForm.familyName.profileFormFamilyText.text.underscoreIfEmpty()
+            familyNameHanja = binding.profileForm.familyName.profileEditFamilyHanjaText.text.underscoreIfEmpty()
+            firstName = names.joinToString("") { v -> v.text.underscoreIfEmpty() }
+            firstNameHanja = namesHanja.joinToString("") { v -> v.text.underscoreIfEmpty() }
 
-            birthDate.value = getBirthDate()
-            gender.value = getGender()
+            birthDate = getBirthDate()
+            gender = getGender() ?: ""
         }
         if (isNewProfile) {
             ProfileManager.add(profile, true)
+        } else {
+            ProfileManager.notifyProfilesUpdated()
         }
     }
 

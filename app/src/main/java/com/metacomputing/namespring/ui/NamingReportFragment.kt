@@ -177,7 +177,7 @@ class NamingReportFragment(
             }
             ProfileManager.mainProfile?.clone()?.run {
                 namingReportHeaderTextProfileSummary.text =
-                    "${report.name}(${report.hanja}) ${gender.value} ($birthAsString)"
+                    "${report.name}(${report.hanja}) ${gender} ($birthAsString)"
             }
             namingReportHeaderTextScore.text = "${report.totalScore}점"
 

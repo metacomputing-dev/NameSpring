@@ -9,8 +9,7 @@ import com.metacomputing.namespring.control.ProfileManager
 import com.metacomputing.namespring.model.dto.DTO
 import com.metacomputing.namespring.model.dto.DTOProfile
 import com.metacomputing.namespring.model.viewmodel.Profile
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 private const val KEY_PROFILE = "profiles_json"
@@ -26,35 +25,37 @@ class LocalDataSource: UserDataSource {
 
     }
 
-    override fun saveProfileData(context: Context): Flow<Unit> = flow {
+    override suspend fun saveProfileData(context: Context) {
         ProfileManager.profiles.value.map { DTOProfile.from(it) }.run {
             context.profileStore.edit { it[JSON_PROFILES] = DTO.JSON.encodeToString(this) }
             Log.i(TAG, "Saved Profiles(count=${this.size})")
         }
     }
 
-    override fun loadProfileData(context: Context)
-    : Flow<List<Profile>> = context.profileStore.data.map { prefs ->
-        (prefs[JSON_PROFILES]?.let {
-            DTO.JSON.decodeFromString<List<DTOProfile>>(it)
-        }?.map { it.toProfile() } ?: emptyList()).also {
-            Log.i(TAG, "Loaded Profiles(count=${it.size})")
-        }
+    override suspend fun loadProfileData(context: Context): List<Profile> {
+        return context.profileStore.data.map { prefs ->
+            (prefs[JSON_PROFILES]?.let {
+                DTO.JSON.decodeFromString<List<DTOProfile>>(it)
+            }?.map { it.toProfile() } ?: emptyList()).also {
+                Log.i(TAG, "Loaded Profiles(count=${it.size})")
+            }
+        }.first()
     }
 
-    override fun saveProfileSelection(context: Context): Flow<Unit> = flow {
-        ProfileManager.mainProfileId.value?.run {
+    override suspend fun saveProfileSelection(context: Context) {
+        ProfileManager.mainProfileId.value.run {
             context.profileStateStore.edit {
-                it[JSON_PROFILE_MAIN_ID] = this
+                it[JSON_PROFILE_MAIN_ID] = this ?: ""
             }
             Log.i(TAG, "Saved Main Profile Selection (${ProfileManager.mainProfile?.title})")
         }
     }
 
-    override fun loadProfileSelection(context: Context)
-    : Flow<String> = context.profileStateStore.data.map { prefs ->
-        (prefs[JSON_PROFILE_MAIN_ID] ?: "").also {
-            Log.i(TAG, "Loaded Main Profile Selection(${it})")
-        }
+    override suspend fun loadProfileSelection(context: Context): String {
+        return context.profileStateStore.data.map { prefs ->
+            (prefs[JSON_PROFILE_MAIN_ID] ?: "").also {
+                Log.i(TAG, "Loaded Main Profile Selection($it)")
+            }
+        }.first()
     }
 }

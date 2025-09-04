@@ -2,7 +2,6 @@ package com.metacomputing.namespring.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -33,10 +32,11 @@ class ProfileListFragment: BaseFragment() {
     }
 
     inner class ProfileListAdapter(
-        private val items: MutableList<Profile>,
         private val onMenuClick: (Int, Profile) -> Unit,
         private val dragStartListener: OnStartDragListener
     ) : RecyclerView.Adapter<ProfileListAdapter.ViewHolder>() {
+        private val items: MutableList<Profile>
+            get() = ProfileManager.profiles.value.toMutableList()
 
         inner class ViewHolder(val binding: ListItemProfileBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -49,7 +49,7 @@ class ProfileListFragment: BaseFragment() {
         @SuppressLint("ClickableViewAccessibility")
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             with (holder.binding) {
-                profileListItemTitle.text = items[position].title.value
+                profileListItemTitle.text = items[position].title
                 profileListItemName.text = items[position].fullNamePrettyString
                 profileListItemBirthdate.text = items[position].birthAsString
                 profileListItemDragHandle.setOnTouchListener { _, event ->
@@ -132,7 +132,6 @@ class ProfileListFragment: BaseFragment() {
             profileListRecyclerView.apply {
                 layoutManager = LinearLayoutManager(inflater.context)
                 adapter = ProfileListAdapter(
-                    ProfileManager.profiles.value.toMutableList(),
                     onMenuClick = { menuItemId, profile ->
                         when (menuItemId) {
                             R.id.menu_item_profile_set_main -> ProfileManager.mainProfile = profile
@@ -145,6 +144,9 @@ class ProfileListFragment: BaseFragment() {
                     itemTouchHelper.attachToRecyclerView(profileListRecyclerView)
                 }
                 ProfileManager.observeProfiles(viewLifecycleOwner) {
+                    adapter?.notifyDataSetChanged()
+                }
+                ProfileManager.observeProfileSelection(viewLifecycleOwner) {
                     adapter?.notifyDataSetChanged()
                 }
             }

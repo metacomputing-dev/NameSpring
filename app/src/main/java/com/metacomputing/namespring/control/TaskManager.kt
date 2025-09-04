@@ -35,6 +35,7 @@ object TaskManager {
             } catch (e: Throwable) {
                 withContext(Dispatchers.Main) {
                     Log.e(TAG, "Exception occurred on TaskManager: ${e.message}")
+                    Thread.currentThread().stackTrace.forEach { Log.e(TAG, it.toString())}
                     onError(e)
                 }
             }
