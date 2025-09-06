@@ -1,4 +1,4 @@
-package com.metacomputing.namespring.model.viewmodel
+package com.metacomputing.namespring.model.data
 
 import android.annotation.SuppressLint
 import android.content.Context

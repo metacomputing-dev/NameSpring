@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.metacomputing.namespring.control.FavoriteManager
 import com.metacomputing.namespring.control.ProfileManager
+import com.metacomputing.namespring.control.UserDataManager
+import com.metacomputing.namespring.model.data.UserData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,6 +39,8 @@ class UserDataCenter(
             val profiles = localDataSource.loadProfileData(activity)
             val selectionId = localDataSource.loadProfileSelection(activity)
             val favorites = localDataSource.loadFavorites(activity)
+            val isInitialUser = localDataSource.isInitialUser(activity)
+            val userData = if (isInitialUser) UserData.INITIAL else localDataSource.loadUserData(activity)
 
             Log.i(TAG, "Loading profile data from local data source (size=${profiles.size}")
             ProfileManager.loadProfiles(activity, profiles)
@@ -47,6 +51,10 @@ class UserDataCenter(
 
             Log.i(TAG, "Loading favorites from local data source (size=${favorites.size}")
             FavoriteManager.load(favorites)
+
+            Log.i(TAG, "Loading User Data (seed=${userData.seed}, tokens=${userData.tokens.value.size})")
+            UserDataManager.load(userData)
+            if (isInitialUser) localDataSource.disableInitialUser(activity)
 
             ProfileManager.observeProfileSelection(activity, ioScope) { id ->
                 if (id.isEmpty() || ProfileManager.getProfileById(id) != null) {

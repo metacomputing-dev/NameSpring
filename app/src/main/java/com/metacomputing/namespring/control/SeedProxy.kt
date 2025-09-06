@@ -2,7 +2,7 @@ package com.metacomputing.namespring.control
 
 import android.util.Log
 import com.metacomputing.namespring.model.report.NamingReport
-import com.metacomputing.namespring.model.viewmodel.Profile
+import com.metacomputing.namespring.model.data.Profile
 import com.metacomputing.namespring.ui.utils.AndroidLogger
 import com.metacomputing.namespring.ui.utils.ProgressManager
 import com.metacomputing.seed.Seed

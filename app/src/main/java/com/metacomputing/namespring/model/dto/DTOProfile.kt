@@ -5,8 +5,8 @@
 
 package com.metacomputing.namespring.model.dto
 
-import com.metacomputing.namespring.model.viewmodel.Profile
-import com.metacomputing.namespring.model.viewmodel.Profile.Companion.Gender
+import com.metacomputing.namespring.model.data.Profile
+import com.metacomputing.namespring.model.data.Profile.Companion.Gender
 import com.metacomputing.namespring.utils.getOrEmpty
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
