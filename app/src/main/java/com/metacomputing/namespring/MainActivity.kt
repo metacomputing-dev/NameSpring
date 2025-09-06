@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import com.metacomputing.namespring.control.SeedProxy
 import com.metacomputing.namespring.control.TaskManager
+import com.metacomputing.namespring.control.UserDataManager
 import com.metacomputing.namespring.databinding.ActivityMainBinding
 import com.metacomputing.namespring.model.repository.UserDataCenter
 import com.metacomputing.namespring.ui.FavoriteListFragment
@@ -64,6 +65,10 @@ class MainActivity: AppCompatActivity() {
                 }
             }
         })
+
+        UserDataManager.userData.observe(this) {
+            binding.toolbar.toolbarSeedCount.text = it.seed.toString()
+        }
     }
 
     override fun onResume() {

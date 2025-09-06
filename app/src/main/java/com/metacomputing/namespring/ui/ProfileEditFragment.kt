@@ -11,7 +11,7 @@ import androidx.core.widget.doOnTextChanged
 import com.metacomputing.namespring.R
 import com.metacomputing.namespring.control.ProfileManager
 import com.metacomputing.namespring.databinding.FragmentProfileEditBinding
-import com.metacomputing.namespring.model.viewmodel.Profile
+import com.metacomputing.namespring.model.data.Profile
 import com.metacomputing.namespring.ui.utils.HanjaSearchDialog
 import com.metacomputing.namespring.ui.utils.NameSlot
 import com.metacomputing.namespring.utils.emptyIfUnderscore

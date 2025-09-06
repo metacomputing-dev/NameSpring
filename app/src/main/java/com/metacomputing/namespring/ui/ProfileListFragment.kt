@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.metacomputing.namespring.R
 import com.metacomputing.namespring.control.ProfileManager
-import com.metacomputing.namespring.model.viewmodel.Profile
+import com.metacomputing.namespring.model.data.Profile
 import com.metacomputing.namespring.databinding.FragmentProfileListBinding
 import com.metacomputing.namespring.databinding.ListItemProfileBinding
 import com.metacomputing.namespring.ui.utils.ViewUtils.getColorDrawable

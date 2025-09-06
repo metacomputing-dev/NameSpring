@@ -8,7 +8,7 @@ import com.metacomputing.namespring.model.metrics.SoundBalance
 import com.metacomputing.namespring.model.metrics.SoundElement
 import com.metacomputing.namespring.model.metrics.Statistics
 import com.metacomputing.namespring.model.metrics.StrokeBalance
-import com.metacomputing.namespring.model.viewmodel.Profile
+import com.metacomputing.namespring.model.data.Profile
 import com.metacomputing.namespring.utils.getHanjaAt
 import com.metacomputing.namespring.utils.toLetterList
 import com.metacomputing.seed.model.NameEvaluationResult

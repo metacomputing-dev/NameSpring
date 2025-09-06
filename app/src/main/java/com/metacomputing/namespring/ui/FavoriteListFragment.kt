@@ -12,7 +12,7 @@ import com.metacomputing.namespring.control.FavoriteManager
 import com.metacomputing.namespring.control.SeedProxy
 import com.metacomputing.namespring.control.TaskManager
 import com.metacomputing.namespring.databinding.FragmentFavoriteListBinding
-import com.metacomputing.namespring.model.viewmodel.Profile
+import com.metacomputing.namespring.model.data.Profile
 import com.metacomputing.namespring.databinding.ListItemProfileBinding
 import com.metacomputing.namespring.model.report.NamingReport
 

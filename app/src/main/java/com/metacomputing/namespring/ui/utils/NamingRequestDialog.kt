@@ -12,7 +12,7 @@ import com.metacomputing.namespring.control.SeedProxy
 import com.metacomputing.namespring.control.TaskManager
 import com.metacomputing.namespring.databinding.NamingRequestFormBinding
 import com.metacomputing.namespring.model.report.NamingReport
-import com.metacomputing.namespring.model.viewmodel.Profile
+import com.metacomputing.namespring.model.data.Profile
 import com.metacomputing.namespring.utils.emptyIfUnderscore
 import com.metacomputing.namespring.utils.getHanjaAt
 import com.metacomputing.namespring.utils.underscoreIfEmpty

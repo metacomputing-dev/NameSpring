@@ -2,7 +2,7 @@ package com.metacomputing.namespring.control
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.asLiveData
-import com.metacomputing.namespring.model.viewmodel.Profile
+import com.metacomputing.namespring.model.data.Profile
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
