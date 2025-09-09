@@ -2,8 +2,8 @@ package com.metacomputing.namespring.control
 
 import androidx.lifecycle.MutableLiveData
 import com.metacomputing.namespring.model.data.UserData
-import com.metacomputing.namespring.model.service.ChargeToken
-import com.metacomputing.namespring.model.service.ServiceToken
+import com.metacomputing.namespring.model.token.ChargeToken
+import com.metacomputing.namespring.model.token.ServiceToken
 
 object UserDataManager {
     val userData = MutableLiveData<UserData>()
@@ -38,6 +38,10 @@ object UserDataManager {
             }
         }
         return true
+    }
+
+    fun hasPurchased(id: String): Boolean {
+        return data.tokens.any { it.id == id }
     }
 
     private fun MutableLiveData<UserData>.update(process: (userData: UserData) -> Unit) {

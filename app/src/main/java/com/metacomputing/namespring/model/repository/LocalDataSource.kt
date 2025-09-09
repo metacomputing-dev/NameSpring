@@ -14,7 +14,7 @@ import com.metacomputing.namespring.model.dto.DTO
 import com.metacomputing.namespring.model.dto.DTOProfile
 import com.metacomputing.namespring.model.data.Profile
 import com.metacomputing.namespring.model.data.UserData
-import com.metacomputing.namespring.model.service.ServiceToken
+import com.metacomputing.namespring.model.token.ServiceToken
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.builtins.ListSerializer

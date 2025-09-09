@@ -118,8 +118,12 @@ data class NamingReport(
             this.familyNameHanja = hanja.getHanjaAt(0)
             this.firstName = name.dropFirstCodePoint()
             this.firstNameHanja = hanja.dropFirstCodePoint()
-            title = "$name($hanja)"
+            title = getNameAsPretty()
         }
+    }
+
+    fun getNameAsPretty(): String {
+        return "$name($hanja)"
     }
 
     fun String.dropFirstCodePoint(): String =

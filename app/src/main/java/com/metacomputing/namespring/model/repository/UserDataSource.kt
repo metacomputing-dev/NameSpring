@@ -3,7 +3,6 @@ package com.metacomputing.namespring.model.repository
 import android.content.Context
 import com.metacomputing.namespring.model.data.Profile
 import com.metacomputing.namespring.model.data.UserData
-import com.metacomputing.namespring.model.service.ServiceToken
 
 interface UserDataSource {
     suspend fun isInitialUser(context: Context): Boolean

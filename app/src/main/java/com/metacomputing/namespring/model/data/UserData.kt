@@ -1,6 +1,6 @@
 package com.metacomputing.namespring.model.data
 
-import com.metacomputing.namespring.model.service.ServiceToken
+import com.metacomputing.namespring.model.token.ServiceToken
 
 data class UserData(
     var seedData: Int,

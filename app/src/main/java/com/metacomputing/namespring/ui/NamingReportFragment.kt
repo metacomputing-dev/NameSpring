@@ -25,6 +25,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.metacomputing.namespring.ui.utils.ToggleCard
 
 class NamingReportFragment(
     private val report: NamingReport
@@ -32,7 +33,20 @@ class NamingReportFragment(
     private lateinit var binding: FragmentNamingReportBinding
 
     private inner class NamingReportAdapter : RecyclerView.Adapter<NamingReportAdapter.ViewHolder>() {
-        inner class ViewHolder(val binding: ListItemNamingReportCommonBinding) : RecyclerView.ViewHolder(binding.root)
+        inner class ViewHolder(
+            val binding: ListItemNamingReportCommonBinding
+        ) : RecyclerView.ViewHolder(binding.root) {
+            private var toggleCard: ToggleCard? = null
+            fun applyToggleCard(position: Int) {
+                with (binding) {
+                    toggleCard = ToggleCard(
+                        card = namingReportItemCardview,
+                        toggle = namingReportItemCardview,
+                        detail = namingReportItemDetails,
+                        report, position)
+                }
+            }
+        }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return ViewHolder(ListItemNamingReportCommonBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -52,6 +66,7 @@ class NamingReportFragment(
                     buildLineChart(holder.binding, this)
                 }
             }
+            holder.applyToggleCard(position)
         }
 
         private fun buildPieChart(binding: ListItemNamingReportCommonBinding, statistics: Statistics) {
