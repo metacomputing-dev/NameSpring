@@ -8,7 +8,7 @@ import com.metacomputing.namespring.model.metrics.SoundBalance
 import com.metacomputing.namespring.model.metrics.SoundElement
 import com.metacomputing.namespring.model.metrics.Statistics
 import com.metacomputing.namespring.model.metrics.StrokeBalance
-import com.metacomputing.namespring.model.viewmodel.Profile
+import com.metacomputing.namespring.model.data.Profile
 import com.metacomputing.namespring.utils.getHanjaAt
 import com.metacomputing.namespring.utils.toLetterList
 import com.metacomputing.seed.model.NameEvaluationResult
@@ -118,8 +118,12 @@ data class NamingReport(
             this.familyNameHanja = hanja.getHanjaAt(0)
             this.firstName = name.dropFirstCodePoint()
             this.firstNameHanja = hanja.dropFirstCodePoint()
-            title = "$name($hanja)"
+            title = getNameAsPretty()
         }
+    }
+
+    fun getNameAsPretty(): String {
+        return "$name($hanja)"
     }
 
     fun String.dropFirstCodePoint(): String =
